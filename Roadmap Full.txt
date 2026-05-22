@@ -7,6 +7,8 @@ Fase 1 — Base técnica
 5. Configurar Prisma + PostgreSQL
 6. Criar models principais
 7. Criar seed básico
+
+
 Fase 2 — Autenticação e acesso
 1. Cadastro
 2. Login
@@ -14,6 +16,8 @@ Fase 2 — Autenticação e acesso
 4. Rotas privadas
 5. Role ADMIN
 6. Middleware de pagamento obrigatório
+
+
 Fase 3 — Design e layout
 1. Configurar paleta dark/neon
 2. Criar componentes base
