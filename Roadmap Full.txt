@@ -1,0 +1,59 @@
+Roadmap Full — Ordem de Execução
+Fase 1 — Base técnica
+1. Criar monorepo frontend/backend
+2. Configurar React + Vite + TS
+3. Configurar Node + Express + TS
+4. Configurar Tailwind
+5. Configurar Prisma + PostgreSQL
+6. Criar models principais
+7. Criar seed básico
+Fase 2 — Autenticação e acesso
+1. Cadastro
+2. Login
+3. JWT
+4. Rotas privadas
+5. Role ADMIN
+6. Middleware de pagamento obrigatório
+Fase 3 — Design e layout
+1. Configurar paleta dark/neon
+2. Criar componentes base
+3. Criar DashboardLayout
+4. Criar Sidebar desktop
+5. Criar BottomNav mobile
+6. Criar telas principais vazias
+Fase 4 — Pagamento MVP
+1. Pagamento manual
+2. Admin aprova pagamento
+3. Dashboard bloqueado/liberado
+4. Tela de status de pagamento
+Fase 5 — Bolão jogável
+1. Cadastro manual/seed de times
+2. Cadastro manual/seed de jogos
+3. Tela Meus Palpites
+4. Jogos de hoje
+5. Todos os jogos
+6. Bloqueio por horário
+7. Palpites dos usuários
+8. Ranking simples
+Fase 6 — Produção para amigos
+1. Deploy frontend Vercel
+2. Deploy backend Render
+3. Banco Supabase
+4. Variáveis de ambiente
+5. Teste completo do fluxo
+6. Link público
+Fase 7 — PIX real
+1. Mercado Pago Developers
+2. Criar cobrança PIX
+3. Exibir QR Code real
+4. Criar webhook
+5. Confirmar pagamento automaticamente
+6. Fallback manual admin
+Fase 8 — API de futebol
+1. Escolher API
+2. Criar integração
+3. Importar jogos
+4. Atualizar resultados
+5. Job automático
+6. Recalcular ranking automaticamente
+Fase 9 — Qualidade e portfólio
