@@ -8,6 +8,11 @@
         "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
     },
     "devDependencies": {
-        "concurrently": "^9.0.0"
+        "concurrently": "^9.0.0",
+        "prisma": "^7.8.0"
+    },
+    "dependencies": {
+        "@prisma/client": "^7.8.0",
+        "dotenv": "^17.4.2"
     }
 }
