@@ -1,17 +1,15 @@
-function App() {
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-      <div className="bg-zinc-900 p-10 rounded-2xl shadow-2xl border border-zinc-800">
-        <h1 className="text-4xl font-bold text-green-400">
-          Best Choice App
-        </h1>
+import { Navigate, Route, Routes } from "react-router";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
-        <p className="mt-4 text-zinc-400">
-          Frontend configured successfully.
-        </p>
-      </div>
-    </div>
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
-
-export default App;
