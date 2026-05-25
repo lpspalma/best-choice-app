@@ -68,6 +68,25 @@ export async function loginService(data: LoginInput) {
   };
 }
 
+export async function getMe(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+  });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  return user;
+}
+
 function tokenGenerator(user: User) {
   return jwt.sign(
     {

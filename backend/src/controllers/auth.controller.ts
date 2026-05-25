@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { registerUserService, loginService } from "../services/auth.service";
+import {
+  registerUserService,
+  loginService,
+  getMe,
+} from "../services/auth.service";
 import { LoginInput, RegisterInput } from "../validators/auth.validator";
 
 export async function registerUser(
@@ -35,4 +39,10 @@ export async function loginUser(
   } catch (error) {
     next(error);
   }
+}
+
+export async function me(req: Request, res: Response) {
+  const user = await getMe(req.user.id);
+
+  return res.json(user);
 }
