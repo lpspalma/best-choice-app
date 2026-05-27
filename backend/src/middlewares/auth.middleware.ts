@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { AppError } from "../errors/AppError";
+import { Role } from "@prisma/client";
 
 type JwtPayload = {
   userId: string;
-  role: string;
+  role: Role;
 };
 
 export function authMiddleware(
