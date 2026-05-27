@@ -1,17 +1,52 @@
-function App() {
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-      <div className="bg-zinc-900 p-10 rounded-2xl shadow-2xl border border-zinc-800">
-        <h1 className="text-4xl font-bold text-green-400">
-          Best Choice App
-        </h1>
+import { Navigate, Route, Routes } from "react-router";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { Dashboard } from "./pages/Dashboard";
+import { PublicRoute } from "./routes/PublicRoute";
+import { useAuth } from "./context/useAuth";
 
-        <p className="mt-4 text-zinc-400">
-          Frontend configured successfully.
-        </p>
-      </div>
-    </div>
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomeRedirect />} />
+
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
 
-export default App;
+function HomeRedirect() {
+  const { token, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return <p>Loading...</p>;
+  }
+
+  return <Navigate to={token ? "/dashboard" : "/login"} replace />;
+}
