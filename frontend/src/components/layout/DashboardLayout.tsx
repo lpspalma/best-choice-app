@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
+import { BottomNav } from "./BottomNav";
 import { Sidebar } from "./Sidebar";
-import { BottomNav } from "../components/layout/BottomNav";
 
 export function DashboardLayout() {
   return (

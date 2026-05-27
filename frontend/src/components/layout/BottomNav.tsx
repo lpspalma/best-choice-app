@@ -15,7 +15,7 @@ export function BottomNav() {
                 rounded-xl px-2 py-2 text-xs transition
                 ${
                   isActive
-                    ? "bg-cyan-400 text-slate-950"
+                    ? "bg-[#28922b] text-white"
                     : "text-slate-400 hover:text-cyan-300"
                 }
               `

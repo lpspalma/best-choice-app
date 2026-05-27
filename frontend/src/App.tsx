@@ -4,11 +4,11 @@ import { Register } from "./pages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { PublicRoute } from "./routes/PublicRoute";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
-import { DashboardLayout } from "./layouts/DashboardLayout";
 import { useAuth } from "./context/useAuth";
 import { Pools } from "./pages/Pools";
 import { Profile } from "./pages/Profile";
 import { CreatePool } from "./pages/CreatePool";
+import { DashboardLayout } from "./components/layout/DashboardLayout";
 
 export default function App() {
   return (

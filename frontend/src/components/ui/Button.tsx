@@ -7,13 +7,13 @@ export function Button({ className = "", children, ...props }: ButtonProps) {
     <button
       className={`
         rounded-xl
-        bg-cyan-400
+        bg-[#28922b]
         px-4
         py-2
         font-semibold
-        text-slate-950
+        text-white
         transition
-        hover:bg-cyan-300
+        hover:bg-[#28922b]/90
         disabled:cursor-not-allowed
         disabled:opacity-50
         ${className}
