@@ -1,10 +1,14 @@
 import { Navigate, Route, Routes } from "react-router";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { Dashboard } from "./pages/Dashboard";
 import { PublicRoute } from "./routes/PublicRoute";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { DashboardLayout } from "./layouts/DashboardLayout";
 import { useAuth } from "./context/useAuth";
+import { Pools } from "./pages/Pools";
+import { Profile } from "./pages/Profile";
+import { CreatePool } from "./pages/CreatePool";
 
 export default function App() {
   return (
@@ -30,13 +34,17 @@ export default function App() {
       />
 
       <Route
-        path="/dashboard"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pools" element={<Pools />} />
+        <Route path="/create-pool" element={<CreatePool />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
     </Routes>
   );
 }
