@@ -25,6 +25,8 @@ Fase 3 — Design e layout
 4. Criar Sidebar desktop
 5. Criar BottomNav mobile
 6. Criar telas principais vazias
+
+
 Fase 4 — Pagamento MVP
 1. Pagamento manual
 2. Admin aprova pagamento
