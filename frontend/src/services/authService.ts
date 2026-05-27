@@ -1,10 +1,31 @@
 import { API_URL } from "./api";
 
+type LoginData = {
+  email: string;
+  password: string;
+};
+
 type RegisterData = {
   name?: string;
   email: string;
   password: string;
 };
+
+export async function loginRequest(data: LoginData) {
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Invalid credentials");
+  }
+
+  return response.json();
+}
 
 export async function registerRequest(data: RegisterData) {
   const response = await fetch(`${API_URL}/auth/register`, {
@@ -15,11 +36,11 @@ export async function registerRequest(data: RegisterData) {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
+  const result = await response.json();
 
-    throw new Error(error.message || "Register failed");
+  if (!response.ok) {
+    throw new Error(result.message || "Register failed");
   }
 
-  return response.json();
+  return result;
 }

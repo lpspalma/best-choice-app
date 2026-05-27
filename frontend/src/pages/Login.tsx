@@ -1,8 +1,10 @@
 import { useState } from "react";
 import type { SyntheticEvent } from "react";
+import { useNavigate } from "react-router";
 import { useAuth } from "../context/useAuth";
 
 export function Login() {
+  const navigate = useNavigate();
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -19,6 +21,7 @@ export function Login() {
 
     try {
       await login(email, password);
+      navigate("/dashboard");
     } catch {
       setError("Invalid credentials");
     } finally {

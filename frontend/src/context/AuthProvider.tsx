@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AuthContext, type User } from "./auth-context";
-import { API_URL } from "../services/api";
+import { loginRequest } from "../services/authService";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -10,19 +10,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   async function login(email: string, password: string) {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Invalid credentials");
-    }
-
-    const data = await response.json();
+    const data = await loginRequest({ email, password });
 
     localStorage.setItem("token", data.token);
 
