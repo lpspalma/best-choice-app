@@ -14,7 +14,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function restoreSession() {
       if (!token) {
-        setIsAuthLoading(true);
+        setIsAuthLoading(false);
         return;
       }
 
@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setToken(null);
     setUser(null);
+    setIsAuthLoading(false);
   }
 
   return (
