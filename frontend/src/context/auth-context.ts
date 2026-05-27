@@ -12,6 +12,7 @@ export type AuthContextType = {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  isAuthLoading: boolean;
 };
 
 export const AuthContext = createContext({} as AuthContextType);

@@ -44,3 +44,18 @@ export async function registerRequest(data: RegisterData) {
 
   return result;
 }
+
+export async function getMeRequest(token: string) {
+  const response = await fetch(`${API_URL}/auth/me`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Unauthorized");
+  }
+
+  return response.json();
+}
