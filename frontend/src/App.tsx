@@ -3,15 +3,31 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { Dashboard } from "./pages/Dashboard";
+import { PublicRoute } from "./routes/PublicRoute";
+import { useAuth } from "./context/useAuth";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<HomeRedirect />} />
 
-      <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
 
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
       <Route
         path="/dashboard"
@@ -23,4 +39,14 @@ export default function App() {
       />
     </Routes>
   );
+}
+
+function HomeRedirect() {
+  const { token, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return <p>Loading...</p>;
+  }
+
+  return <Navigate to={token ? "/dashboard" : "/login"} replace />;
 }
