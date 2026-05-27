@@ -1,36 +1,8 @@
-import {
-  LayoutDashboard,
-  Trophy,
-  PlusSquare,
-  User,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
-
-const links = [
-  {
-    to: "/dashboard",
-    label: "Dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    to: "/pools",
-    label: "Pools",
-    icon: Trophy,
-  },
-  {
-    to: "/create-pool",
-    label: "Create Pool",
-    icon: PlusSquare,
-  },
-  {
-    to: "/profile",
-    label: "Profile",
-    icon: User,
-  },
-];
+import { navigationLinks } from "../config/navigation";
 
 export function Sidebar() {
   const { logout } = useAuth();
@@ -44,7 +16,7 @@ export function Sidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">
-        {links.map(({ to, label, icon: Icon }) => (
+        {navigationLinks.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
