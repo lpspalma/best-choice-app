@@ -1,21 +1,21 @@
 import type { ReactNode } from "react";
+import { theme } from "../../styles/theme";
 
 type CardProps = {
   children: ReactNode;
   className?: string;
+  variant?: "base" | "padded" | "soft";
 };
 
-export function Card({ children, className = "" }: CardProps) {
+export function Card({
+  children,
+  className = "",
+  variant = "padded",
+}: CardProps) {
   return (
     <div
       className={`
-        rounded-2xl
-        border
-        border-slate-800
-        bg-slate-900/70
-        p-6
-        shadow-lg
-        shadow-cyan-500/5
+        ${theme.card[variant]}
         ${className}
       `}
     >

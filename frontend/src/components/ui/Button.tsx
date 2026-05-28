@@ -1,21 +1,20 @@
 import type { ButtonHTMLAttributes } from "react";
+import { theme } from "../../styles/theme";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: "primary" | "secondary" | "danger" | "ghost";
+};
 
-export function Button({ className = "", children, ...props }: ButtonProps) {
+export function Button({
+  className = "",
+  children,
+  variant = "primary",
+  ...props
+}: ButtonProps) {
   return (
     <button
       className={`
-        rounded-xl
-        bg-[#28922b]
-        px-4
-        py-2
-        font-semibold
-        text-white
-        transition
-        hover:bg-[#28922b]/90
-        disabled:cursor-not-allowed
-        disabled:opacity-50
+        ${theme.button[variant]}
         ${className}
       `}
       {...props}

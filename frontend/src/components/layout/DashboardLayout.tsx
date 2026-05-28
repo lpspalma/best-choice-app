@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
+
+import { theme } from "../../styles/theme";
 import { BottomNav } from "./BottomNav";
 import { Sidebar } from "./Sidebar";
 
 export function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className={theme.layout.appShell}>
       <div className="flex min-h-screen">
         <Sidebar />
 
-        <main className="flex-1 px-4 py-6 pb-24 md:px-8 md:pb-6">
+        <main className={theme.layout.main}>
           <Outlet />
         </main>
       </div>
