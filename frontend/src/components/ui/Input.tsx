@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { InputHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { theme } from "../../styles/theme";
+import { Button } from "./Button";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   showPasswordToggle?: boolean;
@@ -30,14 +31,15 @@ export function Input({
       />
 
       {isPasswordField && (
-        <button
+        <Button
           type="button"
           onClick={() => setShowPassword((current) => !current)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-white/50 hover:text-white"
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+          variant="ghost"
           aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
         >
-          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
+          {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+        </Button>
       )}
     </div>
   );

@@ -84,16 +84,18 @@ export function Register() {
         </div>
       </form>
 
-      <p className="mt-6 text-center text-xs text-white/50">
-        Já tem uma conta?{" "}
-        <button
+      <div className="mt-4 w-full text-center">
+        <span className="text-xs text-white/50">Já tem uma conta? </span>
+
+        <Button
           type="button"
+          variant="ghost"
           onClick={() => navigate("/login")}
-          className="cursor-pointer text-green-400 hover:text-green-300"
+          className="inline-flex p-0 text-xs text-green-400 hover:text-green-300"
         >
           Entrar
-        </button>
-      </p>
+        </Button>
+      </div>
     </AuthCard>
   );
 }

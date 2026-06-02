@@ -59,16 +59,28 @@ export function Login() {
         </div>
       </form>
 
-      <p className="mt-6 text-center text-xs text-white/50">
-        Não tem uma conta?{" "}
-        <button
+      <div className="mt-4 flex flex-col items-center gap-1">
+        <Button
           type="button"
-          onClick={() => navigate("/register")}
-          className="cursor-pointer text-green-400 hover:text-green-300"
+          variant="ghost"
+          onClick={() => navigate("/forgot-password")}
+          className="text-xs"
         >
-          Criar conta
-        </button>
-      </p>
+          Esqueci minha senha
+        </Button>
+
+        <p className="text-center text-xs text-white/50">
+          Não tem uma conta?{" "}
+          <Button
+            variant="ghost"
+            type="button"
+            onClick={() => navigate("/register")}
+            className="cursor-pointer text-green-400 hover:text-green-300"
+          >
+            Criar conta
+          </Button>
+        </p>
+      </div>
     </AuthCard>
   );
 }
