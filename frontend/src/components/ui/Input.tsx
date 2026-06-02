@@ -1,16 +1,44 @@
+import { useState } from "react";
 import type { InputHTMLAttributes } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { theme } from "../../styles/theme";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  showPasswordToggle?: boolean;
+};
 
-export function Input({ className = "", ...props }: InputProps) {
+export function Input({
+  className = "",
+  type,
+  showPasswordToggle = false,
+  ...props
+}: InputProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPasswordField = type === "password" && showPasswordToggle;
+
   return (
-    <input
-      className={`
-        ${theme.input}
-        ${className}
-      `}
-      {...props}
-    />
+    <div className="relative w-full">
+      <input
+        type={isPasswordField && showPassword ? "text" : type}
+        className={`
+          ${theme.input}
+          ${isPasswordField ? "pr-12" : ""}
+          ${className}
+        `}
+        {...props}
+      />
+
+      {isPasswordField && (
+        <button
+          type="button"
+          onClick={() => setShowPassword((current) => !current)}
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-white/50 hover:text-white"
+          aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+        >
+          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+        </button>
+      )}
+    </div>
   );
 }

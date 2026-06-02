@@ -2,6 +2,9 @@ import { useState } from "react";
 import type { SyntheticEvent } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/useAuth";
+import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
+import { AuthCard } from "../components/auth/AuthCard";
 
 export function Login() {
   const navigate = useNavigate();
@@ -30,34 +33,42 @@ export function Login() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <AuthCard title="Entrar" subtitle="Acesse sua conta no Bolão da Copa">
+      <form onSubmit={handleSubmit} className="mt-6 w-full space-y-4">
+        <Input
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="E-mail"
+        />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
+        <Input
+          type="password"
+          showPasswordToggle
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="Senha"
+        />
+
+        {error && <p className="text-sm text-red-400">{error}</p>}
+
+        <div className="flex justify-center">
+          <Button variant="primary" type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "ENTRAR"}
+          </Button>
         </div>
-
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-
-        {error && <p>{error}</p>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
       </form>
-    </div>
+
+      <p className="mt-6 text-center text-xs text-white/50">
+        Não tem uma conta?{" "}
+        <button
+          type="button"
+          onClick={() => navigate("/register")}
+          className="cursor-pointer text-green-400 hover:text-green-300"
+        >
+          Criar conta
+        </button>
+      </p>
+    </AuthCard>
   );
 }

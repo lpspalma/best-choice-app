@@ -14,13 +14,13 @@ export const theme = {
 
   button: {
     primary:
-      "rounded-xl bg-app-primary px-4 py-2 font-semibold text-white transition hover:bg-app-primary-hover disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer rounded-xl bg-app-primary px-4 py-2 font-semibold text-white transition hover:bg-app-primary-hover disabled:cursor-not-allowed disabled:opacity-50",
     secondary:
-      "rounded-xl border border-app-border bg-app-surface px-4 py-2 font-semibold text-app-text transition hover:border-app-border-strong hover:bg-app-card-soft disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer rounded-xl border border-app-border bg-app-surface px-4 py-2 font-semibold text-app-text transition hover:border-app-border-strong hover:bg-app-card-soft disabled:cursor-not-allowed disabled:opacity-50",
     danger:
-      "rounded-xl bg-app-danger px-4 py-2 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer rounded-xl bg-app-danger px-4 py-2 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50",
     ghost:
-      "rounded-xl px-4 py-2 font-semibold text-app-muted transition hover:bg-app-card-soft hover:text-app-text disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer rounded-xl px-4 py-2 font-semibold text-app-muted transition hover:bg-app-card-soft hover:text-app-text disabled:cursor-not-allowed disabled:opacity-50",
   },
 
   input:
