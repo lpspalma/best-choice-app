@@ -1,9 +1,16 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/prisma";
-import { LoginInput, RegisterInput } from "../validators/auth.validator";
+import {
+  GoogleLoginInput,
+  LoginInput,
+  RegisterInput,
+} from "../validators/auth.validator";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { AppError } from "../errors/AppError";
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export async function registerUserService(data: RegisterInput) {
   const { name, email, password } = data;
@@ -47,7 +54,7 @@ export async function loginService(data: LoginInput) {
     where: { email },
   });
 
-  if (!user) {
+  if (!user || !user.password) {
     throw new AppError("Invalid credentials", 401);
   }
 
@@ -58,12 +65,41 @@ export async function loginService(data: LoginInput) {
   }
 
   return {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+    user: userResponse(user),
+    token: tokenGenerator(user),
+  };
+}
+
+export async function googleLoginService(data: GoogleLoginInput) {
+  const ticket = await googleClient.verifyIdToken({
+    idToken: data.credential,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+
+  if (!payload?.email) {
+    throw new AppError("Invalid Google account", 401);
+  }
+
+  let user = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
     },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        name: payload.name,
+        email: payload.email,
+        password: null,
+      },
+    });
+  }
+
+  return {
+    user: userResponse(user),
     token: tokenGenerator(user),
   };
 }
@@ -98,4 +134,13 @@ function tokenGenerator(user: User) {
       expiresIn: "1h",
     },
   );
+}
+
+function userResponse(user: User) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
 }

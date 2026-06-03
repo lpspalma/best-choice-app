@@ -13,6 +13,7 @@ export type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthLoading: boolean;
+  loginWithGoogle: (credential: string) => Promise<void>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);

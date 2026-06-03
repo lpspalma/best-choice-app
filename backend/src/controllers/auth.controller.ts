@@ -3,8 +3,10 @@ import {
   registerUserService,
   loginService,
   getMe,
+  googleLoginService,
 } from "../services/auth.service";
 import { LoginInput, RegisterInput } from "../validators/auth.validator";
+import { AppError } from "../errors/AppError";
 
 export async function registerUser(
   req: Request<{}, {}, RegisterInput>,
@@ -42,7 +44,17 @@ export async function loginUser(
 }
 
 export async function me(req: Request, res: Response) {
+  if (!req.user) {
+    throw new AppError("Unauthorized", 401);
+  }
+
   const user = await getMe(req.user.id);
 
   return res.json(user);
+}
+
+export async function googleLogin(req: Request, res: Response) {
+  const result = await googleLoginService(req.body);
+
+  return res.status(200).json(result);
 }

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { AuthContext, type User } from "./auth-context";
-import { getMeRequest, loginRequest } from "../services/authService";
+import {
+  getMeRequest,
+  loginRequest,
+  googleLoginRequest,
+} from "../services/authService";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -44,6 +48,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(data.user);
   }
 
+  async function loginWithGoogle(credential: string) {
+    const data = await googleLoginRequest(credential);
+
+    localStorage.setItem("token", data.token);
+
+    setToken(data.token);
+    setUser(data.user);
+  }
+
   function logout() {
     localStorage.removeItem("token");
 
@@ -58,6 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         token,
         login,
+        loginWithGoogle,
         logout,
         isAuthLoading,
       }}

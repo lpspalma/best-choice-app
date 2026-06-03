@@ -11,5 +11,10 @@ export const loginSchema = z.object({
   password: z.string(),
 });
 
+export const googleLoginSchema = z.object({
+  credential: z.string().min(1),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
+export type GoogleLoginInput = z.infer<typeof googleLoginSchema>;
