@@ -6,6 +6,7 @@ import type {
   ResetPasswordInput,
   VerifyResetCodeInput,
 } from "../validators/passwordReset.validator";
+import { sendPasswordResetCode } from "./email.service";
 
 function generateResetCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -34,7 +35,10 @@ export async function forgotPasswordService(data: ForgotPasswordInput) {
     },
   });
 
-  console.log("Password reset code:", code);
+  await sendPasswordResetCode({
+    to: data.email,
+    code,
+  });
 
   return {
     message: "If this email exists, a reset code was sent",

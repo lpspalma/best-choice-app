@@ -34,6 +34,9 @@ export function Register() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch {
       setError("Não foi possível criar a conta");
     } finally {
