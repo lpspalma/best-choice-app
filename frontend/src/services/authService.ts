@@ -59,3 +59,21 @@ export async function getMeRequest(token: string) {
 
   return response.json();
 }
+
+export async function googleLoginRequest(credential: string) {
+  const response = await fetch(`${API_URL}/auth/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ credential }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Falha no login com a conta Google.");
+  }
+
+  return data;
+}
