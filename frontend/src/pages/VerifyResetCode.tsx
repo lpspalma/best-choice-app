@@ -20,7 +20,15 @@ export function VerifyResetCode() {
     event.preventDefault();
 
     setError("");
+
+    if (!email) {
+      setError("E-mail não encontrado. Solicite um novo código.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
+
     try {
       const response = await fetch(`${API_URL}/auth/verify-reset-code`, {
         method: "POST",

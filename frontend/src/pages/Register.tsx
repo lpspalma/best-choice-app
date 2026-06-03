@@ -22,20 +22,20 @@ export function Register() {
     setError("");
     setSuccess("");
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Senha devem ser iguais");
       return;
     }
     setLoading(true);
 
     try {
       await registerRequest({ name, email, password });
-      setSuccess("Account created successfully");
+      setSuccess("Conta criada com sucesso");
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
     } catch {
-      setError("Could not create account");
+      setError("Não foi possível criar a conta");
     } finally {
       setLoading(false);
     }

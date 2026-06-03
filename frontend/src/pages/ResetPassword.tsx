@@ -33,6 +33,11 @@ export function ResetPassword() {
     setLoading(true);
 
     try {
+      if (!email || !code) {
+        setError("Código inválido ou expirado");
+        return;
+      }
+
       const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: "POST",
         headers: {
@@ -45,10 +50,8 @@ export function ResetPassword() {
         }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao redefinir senha");
+        throw new Error("Não foi possível atualizar a senha");
       }
 
       setSuccess("Senha atualizada com sucesso");
