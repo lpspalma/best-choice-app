@@ -50,7 +50,7 @@ export function Login() {
           placeholder="Senha"
         />
 
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-app-danger">{error}</p>}
 
         <div className="flex justify-center">
           <Button variant="primary" type="submit" disabled={loading}>
@@ -69,13 +69,13 @@ export function Login() {
           Esqueci minha senha
         </Button>
 
-        <p className="text-center text-xs text-white/50">
+        <p className="text-center text-xs text-app-muted">
           Não tem uma conta?{" "}
           <Button
             variant="ghost"
             type="button"
             onClick={() => navigate("/register")}
-            className="cursor-pointer text-green-400 hover:text-green-300"
+            className="cursor-pointer text-app-primary hover:text-app-primaryHover text-xs"
           >
             Criar conta
           </Button>

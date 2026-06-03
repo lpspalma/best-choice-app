@@ -1,14 +1,17 @@
 import { useState, type SyntheticEvent } from "react";
-import { registerRequest } from "../services/authService";
+import { useLocation, useNavigate } from "react-router";
+import { AuthCard } from "../components/auth/AuthCard";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
-import { useNavigate } from "react-router";
-import { AuthCard } from "../components/auth/AuthCard";
+import { API_URL } from "../services/api";
 
-export function Register() {
+export function ResetPassword() {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const location = useLocation();
+
+  const email = location.state?.email ?? "";
+  const code = location.state?.code ?? "";
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -21,49 +24,58 @@ export function Register() {
 
     setError("");
     setSuccess("");
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
+
     setLoading(true);
 
     try {
-      await registerRequest({ name, email, password });
-      setSuccess("Account created successfully");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-    } catch {
-      setError("Could not create account");
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          code,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erro ao redefinir senha");
+      }
+
+      setSuccess("Senha atualizada com sucesso");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Erro inesperado");
+      }
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <AuthCard title="Criar conta" subtitle="Entre para o Bolão da Copa">
-      <form onSubmit={handleSubmit} className="w-full mt-6 space-y-4">
-        <Input
-          type="text"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Nome completo"
-        />
-
-        <Input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="E-mail"
-        />
-
+    <AuthCard title="Nova senha" subtitle="Crie uma nova senha">
+      <form onSubmit={handleSubmit} className="mt-6 w-full space-y-4">
         <Input
           type="password"
           showPasswordToggle
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          placeholder="Senha"
+          placeholder="Nova senha"
         />
 
         <Input
@@ -75,27 +87,15 @@ export function Register() {
         />
 
         {error && <p className="text-sm text-app-danger">{error}</p>}
+
         {success && <p className="text-sm text-app-success">{success}</p>}
 
         <div className="flex justify-center">
           <Button variant="primary" type="submit" disabled={loading}>
-            {loading ? "Criando conta..." : "CRIAR CONTA"}
+            {loading ? "Atualizando..." : "ATUALIZAR SENHA"}
           </Button>
         </div>
       </form>
-
-      <div className="mt-4 w-full text-center">
-        <span className="text-xs text-app-muted">Já tem uma conta? </span>
-
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => navigate("/login")}
-          className="inline-flex p-0 text-xs text-app-primary hover:text-app-primaryHover"
-        >
-          Entrar
-        </Button>
-      </div>
     </AuthCard>
   );
 }

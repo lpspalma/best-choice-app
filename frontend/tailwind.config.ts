@@ -11,6 +11,7 @@ export default {
           surface: "#08111F",
           card: "#0B1220",
           cardSoft: "#111827",
+          success: "#22C55E",
 
           border: "rgba(255, 255, 255, 0.08)",
           borderStrong: "rgba(255, 255, 255, 0.16)",

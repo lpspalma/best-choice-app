@@ -9,6 +9,10 @@ import { Pools } from "./pages/Pools";
 import { Profile } from "./pages/Profile";
 import { CreatePool } from "./pages/CreatePool";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
+import { ResetPassword } from "./pages/ResetPassword";
+import { VerifyResetCode } from "./pages/VerifyResetCode";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { AuthLayout } from "./layouts/AuthLayout";
 
 export default function App() {
   return (
@@ -16,22 +20,18 @@ export default function App() {
       <Route path="/" element={<HomeRedirect />} />
 
       <Route
-        path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <AuthLayout />
           </PublicRoute>
         }
-      />
-
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
+      >
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-reset-code" element={<VerifyResetCode />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Route>
 
       <Route
         element={
