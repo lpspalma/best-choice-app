@@ -22,6 +22,7 @@ export const navigationLinks = [
   {
     to: "/my-guesses",
     label: "Meus Palpites",
+    mobileLabel: "Palpites",
     icon: ListChecks,
     showOnDesktop: true,
     showOnMobile: true,
@@ -43,6 +44,7 @@ export const navigationLinks = [
   {
     to: "/games",
     label: "Todos os Jogos",
+    mobileLabel: "Jogos",
     icon: ClipboardList,
     showOnDesktop: true,
     showOnMobile: true,

@@ -9,7 +9,7 @@ export function BottomNav() {
       <div className="grid grid-cols-5 gap-1">
         {navigationLinks
           .filter((link) => link.showOnMobile)
-          .map(({ to, label, icon: Icon }) => (
+          .map(({ to, label, mobileLabel, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
@@ -24,7 +24,7 @@ export function BottomNav() {
             >
               <Icon size={20} />
 
-              <span>{label}</span>
+              <span>{mobileLabel ?? label}</span>
             </NavLink>
           ))}
       </div>
