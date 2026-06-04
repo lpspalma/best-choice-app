@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 import { theme } from "../styles/theme";
+import { PageContainer } from "../components/layout/PageContainer";
 
 type GamesTab = "today-games" | "all-games";
 
@@ -10,7 +11,7 @@ export function Games() {
   const [activeTab, setActiveTab] = useState<GamesTab>("today-games");
 
   return (
-    <div>
+    <PageContainer>
       <PageHeader
         title="Jogos"
         description="Acompanhe os jogos do dia e todos os jogos da Copa."
@@ -63,7 +64,7 @@ export function Games() {
           </Card>
         </section>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 import { theme } from "../styles/theme";
+import { PageContainer } from "../components/layout/PageContainer";
 
 type GuessTab = "my-guesses" | "user-guesses";
 
@@ -10,7 +11,7 @@ export function MyGuesses() {
   const [activeTab, setActiveTab] = useState<GuessTab>("my-guesses");
 
   return (
-    <div>
+    <PageContainer>
       <PageHeader
         title="Meus Palpites"
         description="Acompanhe e edite seus palpites da Copa."
@@ -65,7 +66,7 @@ export function MyGuesses() {
           </Card>
         </section>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

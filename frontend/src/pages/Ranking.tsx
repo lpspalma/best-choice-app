@@ -1,9 +1,10 @@
+import { PageContainer } from "../components/layout/PageContainer";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 
 export function Ranking() {
   return (
-    <div>
+    <PageContainer>
       <PageHeader
         title="Ranking"
         description="Acompanhe a pontuação dos participantes."
@@ -12,6 +13,6 @@ export function Ranking() {
       <Card>
         <p>Conteúdo em construção.</p>
       </Card>
-    </div>
+    </PageContainer>
   );
 }
