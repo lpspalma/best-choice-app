@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Dashboard } from "./pages/Dashboard";
@@ -53,7 +53,7 @@ function HomeRedirect() {
   const { token, isAuthLoading } = useAuth();
 
   if (isAuthLoading) {
-    return <p>Loading...</p>;
+    return <p>Carregando...</p>;
   }
 
   return <Navigate to={token ? "/dashboard" : "/login"} replace />;

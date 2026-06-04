@@ -26,40 +26,218 @@ Fase 3 — Design e layout
 5. Criar BottomNav mobile
 6. Criar telas principais vazias
 
+Step 4 — Phase structure / foundation
 
-Fase 4 — Pagamento MVP
+Goal: prepare the app structure before implementing pages.
+
+Includes:
+
+- Define all pages
+- Define protected routes
+- Define menu/sidebar structure
+- Define shared layout
+- Define shared components
+- Define mock strategy
+- Define backend mock endpoint pattern
+
+No page fully implemented yet.
+
+Step 5 — Dashboard implementation
+
+Includes:
+
+Frontend:
+- Dashboard page UI
+- Cards: points, ranking, predictions
+- Next match section
+- Today games preview
+
+Backend:
+- GET /dashboard
+- Mock dashboard service
+- Mock data shaped like future DB response
+
+DB future mapping:
+- User
+- Prediction
+- Match
+- Ranking
+Step 6 — Rules page implementation
+
+Includes:
+
+Frontend:
+- Rules page UI
+- Points explanation
+- Deadline rules
+- Visibility rules
+
+Backend:
+- GET /rules
+- Mock rules service
+
+Business rules:
+- Exact score points
+- Correct winner points
+- Draw rules
+- Edit deadline
+- Penalty rule
+Step 7 — Ranking implementation
+
+Includes:
+
+Frontend:
+- Ranking table
+- Position, name, points, exact scores, correct results
+
+Backend:
+- GET /ranking
+- Ranking service
+- Mock ranking data
+
+Business rules:
+- Sort by points
+- Tie-breakers
+- Recalculate ranking after finished matches
+Step 8 — Jogos de Hoje implementation
+
+Includes:
+
+Frontend:
+- Today games list
+- Match cards
+- Prediction inputs
+
+Backend:
+- GET /matches/today
+- Mock today matches service
+
+Rules:
+- Can predict only before match starts
+- Disable input after deadline
+Step 9 — Todos os Jogos implementation
+
+Includes:
+
+Frontend:
+- All matches page
+- Filters by date, group, stage, status
+
+Backend:
+- GET /matches
+- Mock all matches service
+Step 10 — Meus Palpites implementation
+
+Includes:
+
+Frontend:
+- User predictions page
+- Edit prediction before deadline
+
+Backend:
+- GET /predictions/me
+- POST /predictions
+- PUT /predictions/:id
+
+Rules:
+- One prediction per user per match
+- Cannot edit after match starts
+Step 11 — Palpites dos Usuários implementation
+
+Includes:
+
+Frontend:
+- See other users’ predictions
+
+Backend:
+- GET /predictions/users
+
+Rules:
+- Only show other predictions after match starts
+Step 12 — Tabela da Copa implementation
+
+Includes:
+
+Frontend:
+- Group tables
+
+Backend:
+- GET /standings
+- Mock standings service
+
+Rules:
+- Calculate table from match results later
+Step 13 — Resultados implementation
+
+Includes:
+
+Frontend:
+- Finished matches
+- Scores
+- Status
+
+Backend:
+- GET /results
+- Mock results service
+Step 14 — Meu Perfil implementation
+
+Includes:
+
+Frontend:
+- Name, email, points, ranking
+- Logout
+
+Backend:
+- GET /profile
+Step 15 — Business rules engine
+
+Includes:
+
+- Points calculator
+- Ranking calculator
+- Prediction deadline checker
+- Prediction visibility checker
+- Match status checker
+Step 16 — Replace mock with real DB
+
+Includes:
+
+- Prisma models
+- Migrations
+- Seed data
+- Services using DB instead of mock arrays
+
+Step 17 — API-Football connection
+
+Includes:
+
+- API provider service
+- Initial sync
+- Update matches
+- Update scores
+- Update standings
+- Save API response into DB
+
+Step 18  — Pagamento MVP
 1. Pagamento manual
 2. Admin aprova pagamento
 3. Dashboard bloqueado/liberado
 4. Tela de status de pagamento
-Fase 5 — Bolão jogável
-1. Cadastro manual/seed de times
-2. Cadastro manual/seed de jogos
-3. Tela Meus Palpites
-4. Jogos de hoje
-5. Todos os jogos
-6. Bloqueio por horário
-7. Palpites dos usuários
-8. Ranking simples
-Fase 6 — Produção para amigos
+
+Step 19  — Produção para amigos
 1. Deploy frontend Vercel
 2. Deploy backend Render
 3. Banco Supabase
 4. Variáveis de ambiente
 5. Teste completo do fluxo
 6. Link público
-Fase 7 — PIX real
+
+Step 20  — PIX real
 1. Mercado Pago Developers
 2. Criar cobrança PIX
 3. Exibir QR Code real
 4. Criar webhook
 5. Confirmar pagamento automaticamente
 6. Fallback manual admin
-Fase 8 — API de futebol
-1. Escolher API
-2. Criar integração
-3. Importar jogos
-4. Atualizar resultados
-5. Job automático
-6. Recalcular ranking automaticamente
-Fase 9 — Qualidade e portfólio
+
+Step 21 — Qualidade e portfólio
