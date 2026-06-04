@@ -19,6 +19,7 @@ import { WorldCupTable } from "./pages/WorldCupTable";
 import { Results } from "./pages/Results";
 import { Ranking } from "./pages/Ranking";
 import { Rules } from "./pages/Rules";
+import { LoadingState } from "./components/ui/LoadingState";
 
 export default function App() {
   return (
@@ -65,7 +66,7 @@ function HomeRedirect() {
   const { token, isAuthLoading } = useAuth();
 
   if (isAuthLoading) {
-    return <p>Carregando...</p>;
+    return <LoadingState />;
   }
 
   return <Navigate to={token ? "/dashboard" : "/login"} replace />;
