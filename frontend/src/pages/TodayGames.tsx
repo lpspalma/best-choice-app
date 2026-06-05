@@ -2,16 +2,16 @@ import { PageContainer } from "../components/layout/PageContainer";
 import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 
-export function Profile() {
+export function TodayGames() {
   return (
     <PageContainer>
       <PageHeader
-        title="Profile"
-        description="Manage your account information."
+        title="Jogos"
+        description="Consulte todos os jogos da Copa."
       />
 
       <Card>
-        <p className="text-slate-400">Profile content will be created here.</p>
+        <p>Conteúdo em construção.</p>
       </Card>
     </PageContainer>
   );

@@ -6,25 +6,27 @@ import { theme } from "../../styles/theme";
 export function BottomNav() {
   return (
     <nav className={theme.nav.bottom}>
-      <div className="grid grid-cols-4 gap-1">
-        {navigationLinks.map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              `
+      <div className="grid grid-cols-5 gap-1">
+        {navigationLinks
+          .filter((link) => link.showOnMobile)
+          .map(({ to, label, mobileLabel, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `
                 ${theme.nav.bottomItem}
                 ${
                   isActive ? theme.nav.navItemActive : theme.nav.navItemInactive
                 }
               `
-            }
-          >
-            <Icon size={20} />
+              }
+            >
+              <Icon size={20} />
 
-            <span>{label}</span>
-          </NavLink>
-        ))}
+              <span>{mobileLabel ?? label}</span>
+            </NavLink>
+          ))}
       </div>
     </nav>
   );
