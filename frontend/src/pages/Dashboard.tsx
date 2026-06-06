@@ -1,42 +1,281 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
-import { Input } from "../components/ui/Input";
 import { PageHeader } from "../components/ui/PageHeader";
-import { useAuth } from "../context/useAuth";
-import { theme } from "../styles/theme";
 import { PageContainer } from "../components/layout/PageContainer";
+import { getDashboardData } from "../services/dashboard.service";
+import { theme } from "../styles/theme";
+import type { DashboardData } from "../types/dashboard";
+import { Link } from "react-router-dom";
+import { formatGameDate, formatGameTime } from "../utils/date";
+import { LoadingState } from "../components/ui/LoadingState";
+import { DashboardSection } from "../components/dashboard/DashboardSection";
+import { EmptyState } from "../components/ui/EmptyState";
 
 export function Dashboard() {
-  const { logout, user } = useAuth();
-  const navigate = useNavigate();
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null,
+  );
 
-  function handleLogout() {
-    logout();
-    navigate("/login");
+  useEffect(() => {
+    async function loadDashboardData() {
+      const data = await getDashboardData();
+      setDashboardData(data);
+    }
+
+    loadDashboardData();
+  }, []);
+
+  if (!dashboardData) {
+    return (
+      <PageContainer>
+        <PageHeader title="Dashboard" description="Resumo geral do seu bolão" />
+
+        <LoadingState message="Carregando dashboard..." />
+      </PageContainer>
+    );
   }
 
   return (
     <PageContainer>
-      <PageHeader title="Dashboard" description="Your betting overview" />
+      <PageHeader title="Dashboard" description="Resumo geral do seu bolão" />
+      <section className="grid gap-3 md:grid-cols-4 md:gap-4">
+        <Card>
+          <p className={`text-xs md:text-sm ${theme.text.subtle}`}>Pontuação</p>
 
-      <Card className="space-y-4">
-        <Input placeholder="Search pools..." />
+          <p className="mt-1 text-2xl font-bold text-app-text md:mt-2 md:text-3xl">
+            {dashboardData.summary.points}
+          </p>
+        </Card>
 
-        <div className="flex gap-3">
-          <Button variant="primary">Create Pool</Button>
-          <Button variant="secondary" onClick={handleLogout}>
-            Logout
-          </Button>
-        </div>
-      </Card>
+        <Card>
+          <p className={`text-xs md:text-sm ${theme.text.subtle}`}>
+            Minha posição
+          </p>
 
-      <Card variant="soft">
-        <p className={theme.text.subtitle}>
-          Welcome, {user?.name ?? user?.email}
-        </p>
-      </Card>
+          <p className="mt-1 text-2xl font-bold text-app-text md:mt-2 md:text-3xl">
+            #{dashboardData.summary.currentPosition}
+          </p>
+        </Card>
+
+        <Card>
+          <p className={`text-xs md:text-sm ${theme.text.subtle}`}>
+            Palpites feitos
+          </p>
+
+          <p className="mt-1 text-2xl font-bold text-app-text md:mt-2 md:text-3xl">
+            {dashboardData.summary.guessesMade}
+          </p>
+        </Card>
+
+        <Card>
+          <p className={`text-xs md:text-sm ${theme.text.subtle}`}>Jogadores</p>
+
+          <p className="mt-1 text-2xl font-bold text-app-text md:mt-2 md:text-3xl">
+            {dashboardData.summary.totalPlayers}
+          </p>
+        </Card>
+      </section>
+      <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <DashboardSection
+          title="Próximos Jogos"
+          description="Próximas partidas da rodada"
+          action={
+            <Link
+              to="/games"
+              className="text-sm font-medium text-app-primary transition hover:text-white hover:underline"
+            >
+              Jogos
+            </Link>
+          }
+        >
+          {dashboardData.nextGames.length === 0 ? (
+            <EmptyState
+              title="Nenhum jogo disponível"
+              description="Ainda não existem próximos jogos para exibir."
+            />
+          ) : (
+            <div className="space-y-3">
+              {dashboardData.nextGames.map((game) => (
+                <div
+                  key={game.id}
+                  className="rounded-xl border border-app-border bg-app-surface p-3 md:p-4"
+                >
+                  <p className="mb-2 text-center text-xs text-app-subtle">
+                    {formatGameDate(game.date)} às {formatGameTime(game.date)}
+                  </p>
+
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-3">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <img
+                        src={game.teams.home.logo}
+                        alt={game.teams.home.name}
+                        className="h-7 w-7 shrink-0 md:h-8 md:w-8"
+                      />
+
+                      <span className="truncate text-sm font-medium text-app-text md:text-base">
+                        {game.teams.home.name}
+                      </span>
+                    </div>
+
+                    <span className="text-xs text-app-muted md:text-sm">
+                      vs
+                    </span>
+
+                    <div className="flex min-w-0 items-center justify-end gap-2">
+                      <span className="truncate text-right text-sm font-medium text-app-text md:text-base">
+                        {game.teams.away.name}
+                      </span>
+
+                      <img
+                        src={game.teams.away.logo}
+                        alt={game.teams.away.name}
+                        className="h-7 w-7 shrink-0 md:h-8 md:w-8"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </DashboardSection>
+
+        <DashboardSection
+          title="Ranking Rápido"
+          description="Top jogadores do bolão"
+        >
+          {dashboardData.quickRanking.length === 0 ? (
+            <EmptyState
+              title="Ranking ainda não disponível."
+              description="Não há pontuações para exibir."
+            />
+          ) : (
+            <div className="space-y-3">
+              {dashboardData.quickRanking.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center justify-between rounded-xl border border-app-border bg-app-surface p-3"
+                >
+                  <div>
+                    <p className="font-medium text-app-text">
+                      #{user.position} {user.name}
+                    </p>
+
+                    <p className="text-sm text-app-muted">
+                      {user.exactScores} placares exatos
+                    </p>
+                  </div>
+
+                  <p className="font-bold text-app-gold">{user.points} pts</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </DashboardSection>
+      </section>
+      <section className="border-t border-app-border pt-6">
+        <DashboardSection
+          title="Meus Últimos Palpites"
+          description="Seus palpites mais recentes"
+          action={
+            <Link
+              to="/my-guesses"
+              className="text-sm font-medium text-app-primary transition hover:text-white hover:underline"
+            >
+              Palpites
+            </Link>
+          }
+        >
+          {dashboardData.latestGuesses.length === 0 ? (
+            <EmptyState
+              title="Nenhum palpite encontrado"
+              description="Você ainda não realizou palpites recentes."
+            />
+          ) : (
+            <div className="space-y-3">
+              {dashboardData.latestGuesses.map((guess) => (
+                <div
+                  key={guess.id}
+                  className="rounded-xl border border-app-border bg-app-surface px-3 py-2"
+                >
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      <img
+                        src={guess.game.teams.home.logo}
+                        alt={guess.game.teams.home.name}
+                        className="h-5 w-5 shrink-0 md:h-6 md:w-6"
+                      />
+
+                      <span className="truncate text-xs font-medium text-app-text md:text-sm">
+                        {guess.game.teams.home.name}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-1 rounded-md bg-app-card-soft px-2 py-1 text-xs font-bold text-app-text md:text-sm">
+                      <span>{guess.homeGuess}</span>
+                      <span>x</span>
+                      <span>{guess.awayGuess}</span>
+                    </div>
+
+                    <div className="flex min-w-0 items-center justify-end gap-1.5">
+                      <span className="truncate text-right text-xs font-medium text-app-text md:text-sm">
+                        {guess.game.teams.away.name}
+                      </span>
+
+                      <img
+                        src={guess.game.teams.away.logo}
+                        alt={guess.game.teams.away.name}
+                        className="h-5 w-5 shrink-0 md:h-6 md:w-6"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </DashboardSection>
+      </section>
+
+      <section className="grid gap-6 md:grid-cols-2">
+        <DashboardSection
+          title="Resumo da Rodada"
+          description="Seu progresso até agora"
+        >
+          <div className="space-y-3">
+            <div className="flex items-center justify-between rounded-xl bg-app-surface p-4">
+              <span className={theme.text.muted}>Jogos disponíveis</span>
+
+              <span className="font-bold text-app-text">
+                {dashboardData.summary.totalGames}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between rounded-xl bg-app-surface p-4">
+              <span className={theme.text.muted}>Palpites realizados</span>
+
+              <span className="font-bold text-app-primary">
+                {dashboardData.summary.guessesMade}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between rounded-xl bg-app-surface p-4">
+              <span className={theme.text.muted}>Palpites pendentes</span>
+
+              <span className="font-bold text-app-gold">
+                {dashboardData.summary.totalGames -
+                  dashboardData.summary.guessesMade}
+              </span>
+            </div>
+          </div>
+        </DashboardSection>
+
+        <DashboardSection
+          title="Jogos Ao Vivo"
+          description="Partidas em andamento"
+        >
+          <p className={theme.text.muted}>Nenhum jogo ao vivo no momento.</p>
+        </DashboardSection>
+      </section>
     </PageContainer>
   );
 }

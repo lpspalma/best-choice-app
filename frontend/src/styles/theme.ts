@@ -43,8 +43,8 @@ export const theme = {
     navItemInactive:
       "text-app-muted hover:bg-app-card-soft hover:text-app-text",
     bottom:
-      "fixed bottom-0 left-0 right-0 z-50 border-t border-app-border bg-app-surface/95 px-2 py-2 backdrop-blur md:hidden",
+      "fixed bottom-0 left-0 right-0 z-50 border-t border-app-border bg-app-surface/95 px-1 py-1 backdrop-blur md:hidden",
     bottomItem:
-      "flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-xs transition",
+      "flex flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1.5 text-[10px] transition",
   },
 };
