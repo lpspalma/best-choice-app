@@ -6,6 +6,10 @@ import { Card } from "../components/ui/Card";
 import { PageHeader } from "../components/ui/PageHeader";
 import { mockStandings } from "../mocks/standings.mock";
 import { theme } from "../styles/theme";
+import type { Game } from "../types/game";
+import { mockPlayoffs } from "../mocks/playoffs.mock";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "../components/ui/Button";
 
 type TableTab = "groups" | "playoffs";
 
@@ -41,60 +45,61 @@ export function WorldCupTable() {
       />
 
       <div className="flex rounded-2xl border border-app-border bg-app-surface p-1">
-        <button
+        <Button
           type="button"
+          variant={activeTab === "groups" ? "primary" : "ghost"}
           onClick={() => setActiveTab("groups")}
-          className={`flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition ${
-            activeTab === "groups"
-              ? "bg-app-primary text-white shadow-glow-green"
-              : "text-app-muted hover:bg-app-card-soft hover:text-app-text"
-          }`}
+          className="flex-1"
         >
           Grupos
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
+          variant={activeTab === "playoffs" ? "primary" : "ghost"}
           onClick={() => setActiveTab("playoffs")}
-          className={`flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition ${
-            activeTab === "playoffs"
-              ? "bg-app-primary text-white shadow-glow-green"
-              : "text-app-muted hover:bg-app-card-soft hover:text-app-text"
-          }`}
+          className="flex-1"
         >
           Mata-mata
-        </button>
+        </Button>
       </div>
 
       {activeTab === "groups" && (
         <Card className="space-y-4">
           <div className="flex items-center justify-between gap-3">
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handlePreviousGroup}
               disabled={!canGoToPreviousGroup}
-              className={theme.button.secondary}
+              className="flex items-center justify-center gap-2 px-3 md:px-4"
             >
-              Anterior
-            </button>
+              <ChevronLeft size={18} />
+
+              <span className="hidden md:inline">Anterior</span>
+            </Button>
 
             <div className="text-center">
               <p className="text-lg font-bold text-app-text">
                 {translatedGroupName}
               </p>
+
               <p className={`text-xs ${theme.text.subtle}`}>
                 {activeGroupIndex + 1} de {mockStandings.length}
               </p>
             </div>
 
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleNextGroup}
               disabled={!canGoToNextGroup}
-              className={theme.button.secondary}
+              className="flex items-center justify-center gap-2 px-3 md:px-4"
             >
-              Próximo
-            </button>
+              <span className="hidden md:inline">Próximo</span>
+
+              <ChevronRight size={18} />
+            </Button>
           </div>
 
           <div className="hidden md:block">
@@ -251,11 +256,31 @@ export function WorldCupTable() {
       )}
 
       {activeTab === "playoffs" && (
-        <Card>
-          <p className={theme.text.muted}>
-            Mata-mata será implementado no próximo substep.
-          </p>
-        </Card>
+        <div className="space-y-4">
+          {roundOrder.map((round) => {
+            const games = mockPlayoffs.filter(
+              (game) => game.league.round === round,
+            );
+
+            if (games.length === 0) {
+              return null;
+            }
+
+            return (
+              <section key={round} className="space-y-3">
+                <h2 className="text-lg font-bold text-app-text">
+                  {translateRound(round)}
+                </h2>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  {games.map((game) => (
+                    <PlayoffGameCard key={game.id} game={game} />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
       )}
     </PageContainer>
   );
@@ -280,6 +305,119 @@ function StatItem({ label, value }: { label: string; value: number }) {
     <div className="rounded-xl bg-app-card-soft p-2">
       <p className="text-[10px] font-semibold text-app-subtle">{label}</p>
       <p className="mt-1 font-bold text-app-text">{value}</p>
+    </div>
+  );
+}
+const roundOrder = [
+  "Round of 32",
+  "Round of 16",
+  "Quarter-finals",
+  "Semi-finals",
+  "Final",
+];
+
+function translateRound(round: string) {
+  const translations: Record<string, string> = {
+    "Round of 32": "16 avos de final",
+    "Round of 16": "Oitavas de final",
+    "Quarter-finals": "Quartas de final",
+    "Semi-finals": "Semifinais",
+    Final: "Final",
+  };
+
+  return translations[round] ?? round;
+}
+
+function PlayoffGameCard({ game }: { game: Game }) {
+  const shouldShowScore = game.status.short !== "NS";
+  const hasPenalty =
+    game.score?.penalty?.home !== null &&
+    game.score?.penalty?.home !== undefined &&
+    game.score?.penalty?.away !== null &&
+    game.score?.penalty?.away !== undefined;
+
+  return (
+    <Card className="space-y-4">
+      <div>
+        <p className="text-sm font-semibold text-app-text">
+          {translateRound(game.league.round)}
+        </p>
+        <p className={`text-xs ${theme.text.subtle}`}>
+          {game.venue.name} • {game.venue.city}
+        </p>
+      </div>
+
+      <div className="space-y-3">
+        <PlayoffTeamRow
+          name={game.teams.home.name}
+          logo={game.teams.home.logo}
+          score={game.goals.home}
+          penaltyScore={game.score?.penalty?.home}
+          winner={game.teams.home.winner}
+          shouldShowScore={shouldShowScore}
+          hasPenalty={hasPenalty}
+        />
+
+        <PlayoffTeamRow
+          name={game.teams.away.name}
+          logo={game.teams.away.logo}
+          score={game.goals.away}
+          penaltyScore={game.score?.penalty?.away}
+          winner={game.teams.away.winner}
+          shouldShowScore={shouldShowScore}
+          hasPenalty={hasPenalty}
+        />
+      </div>
+
+      {!shouldShowScore && (
+        <p className="rounded-xl bg-app-card-soft px-3 py-2 text-center text-xs font-semibold text-app-muted">
+          Confronto ainda não iniciado
+        </p>
+      )}
+    </Card>
+  );
+}
+
+function PlayoffTeamRow({
+  name,
+  logo,
+  score,
+  penaltyScore,
+  winner,
+  shouldShowScore,
+  hasPenalty,
+}: {
+  name: string;
+  logo?: string;
+  score: number | null;
+  penaltyScore?: number | null;
+  winner?: boolean | null;
+  shouldShowScore: boolean;
+  hasPenalty: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center justify-between gap-3 rounded-xl border p-3 ${
+        winner
+          ? "border-app-primary bg-app-primary/10"
+          : "border-app-border bg-app-surface"
+      }`}
+    >
+      <GameTeam name={name} logo={logo} />
+
+      <div className="flex items-center gap-2">
+        {shouldShowScore ? (
+          <span className="text-lg font-bold text-app-text">{score ?? 0}</span>
+        ) : (
+          <span className="text-sm font-semibold text-app-muted">-</span>
+        )}
+
+        {hasPenalty && (
+          <span className="text-xs font-semibold text-app-gold">
+            ({penaltyScore ?? 0})
+          </span>
+        )}
+      </div>
     </div>
   );
 }
