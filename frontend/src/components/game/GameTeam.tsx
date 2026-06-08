@@ -1,10 +1,16 @@
 type GameTeamProps = {
   name: string;
   logo?: string;
+  shortName?: string;
   alignRight?: boolean;
 };
 
-export function GameTeam({ name, logo, alignRight = false }: GameTeamProps) {
+export function GameTeam({
+  name,
+  logo,
+  shortName,
+  alignRight = false,
+}: GameTeamProps) {
   return (
     <div
       className={`flex min-w-0 items-center gap-2 ${
@@ -12,6 +18,9 @@ export function GameTeam({ name, logo, alignRight = false }: GameTeamProps) {
       }`}
     >
       {!alignRight && <TeamLogo logo={logo} name={name} />}
+      <p className="text-center text-[10px] font-semibold text-app-text md:hidden">
+        {shortName ?? name.slice(0, 3).toUpperCase()}
+      </p>
 
       <p className="hidden truncate text-sm font-semibold text-app-text md:block">
         {name}
