@@ -1,9 +1,10 @@
 import { useState } from "react";
-
-import { Card } from "../components/ui/Card";
-import { PageHeader } from "../components/ui/PageHeader";
-import { theme } from "../styles/theme";
 import { PageContainer } from "../components/layout/PageContainer";
+import { PageHeader } from "../components/ui/PageHeader";
+import { mockGames } from "../mocks/games.mock";
+import { mockTodayGames } from "../mocks/todayGames.mock";
+import { Button } from "../components/ui/Button";
+import { GameList } from "../components/game/GameList";
 
 type GamesTab = "today-games" | "all-games";
 
@@ -18,63 +19,44 @@ export function Games() {
       />
 
       <div className="mb-4 grid grid-cols-2 gap-2 md:hidden">
-        <button
+        <Button
           type="button"
           onClick={() => setActiveTab("today-games")}
-          className={getTabClassName(activeTab === "today-games")}
+          variant={activeTab === "today-games" ? "primary" : "secondary"}
         >
           Jogos de Hoje
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
           onClick={() => setActiveTab("all-games")}
-          className={getTabClassName(activeTab === "all-games")}
+          variant={activeTab === "all-games" ? "primary" : "secondary"}
         >
           Todos os Jogos
-        </button>
+        </Button>
       </div>
 
-      <div className="space-y-4">
-        <section
-          className={activeTab === "today-games" ? "block" : "hidden md:hidden"}
-        >
-          <Card>
-            <h2 className="mb-2 text-lg font-semibold text-app-text">
-              Jogos de Hoje
-            </h2>
+      <section
+        className={
+          activeTab === "today-games" ? "space-y-4" : "hidden md:hidden"
+        }
+      >
+        <GameList
+          games={mockTodayGames}
+          emptyTitle="Nenhum jogo hoje"
+          emptyDescription="Volte mais tarde para acompanhar os próximos jogos."
+        />
+      </section>
 
-            <p className={theme.text.subtitle}>
-              Conteúdo dos jogos de hoje em construção.
-            </p>
-          </Card>
-        </section>
-
-        <section
-          className={activeTab === "all-games" ? "block" : "hidden md:block"}
-        >
-          <Card>
-            <h2 className="mb-2 text-lg font-semibold text-app-text">
-              Todos os Jogos
-            </h2>
-
-            <p className={theme.text.subtitle}>
-              Conteúdo com todos os jogos da Copa em construção.
-            </p>
-          </Card>
-        </section>
-      </div>
+      <section
+        className={activeTab === "all-games" ? "space-y-4" : "hidden md:block"}
+      >
+        <GameList
+          games={mockGames}
+          emptyTitle="Nenhum jogo encontrado"
+          emptyDescription="Assim que os jogos estiverem disponíveis, eles aparecerão aqui."
+        />
+      </section>
     </PageContainer>
   );
-}
-
-function getTabClassName(isActive: boolean) {
-  return `
-    cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold transition
-    ${
-      isActive
-        ? "bg-app-primary text-white shadow-glow-green"
-        : "bg-app-surface text-app-muted hover:bg-app-card-soft hover:text-app-text"
-    }
-  `;
 }

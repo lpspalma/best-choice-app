@@ -6,11 +6,12 @@ import { UserGuessesList } from "../components/guesses/UserGuessesList";
 import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { PageHeader } from "../components/ui/PageHeader";
+import { Button } from "../components/ui/Button";
+import { EmptyState } from "../components/ui/EmptyState";
 import { mockMyGuesses } from "../mocks/myGuesses.mock";
 import { theme } from "../styles/theme";
 import type { MyGuess } from "../types/myGuess";
-import { Button } from "../components/ui/Button";
-import { EmptyState } from "../components/ui/EmptyState";
+import { formatGameDateTime, formatShortDate } from "../utils/date";
 
 type GuessTab = "my-guesses" | "user-guesses";
 
@@ -81,7 +82,7 @@ export function MyGuesses() {
         <Button
           type="button"
           onClick={() => setActiveTab("my-guesses")}
-          className={getTabClassName(activeTab === "my-guesses")}
+          variant={activeTab === "my-guesses" ? "primary" : "secondary"}
         >
           Meus Palpites
         </Button>
@@ -89,7 +90,7 @@ export function MyGuesses() {
         <Button
           type="button"
           onClick={() => setActiveTab("user-guesses")}
-          className={getTabClassName(activeTab === "user-guesses")}
+          variant={activeTab === "user-guesses" ? "primary" : "secondary"}
         >
           Usuários
         </Button>
@@ -99,26 +100,11 @@ export function MyGuesses() {
         <section
           className={activeTab === "my-guesses" ? "block" : "hidden md:block"}
         >
-          <div className="-mx-1 mb-4 flex max-w-full gap-2 overflow-x-auto px-1 pb-1">
-            <Button
-              type="button"
-              onClick={() => setSelectedDate("all")}
-              className={getDateFilterClassName(selectedDate === "all")}
-            >
-              Todos
-            </Button>
-
-            {availableDates.map((date) => (
-              <Button
-                key={date}
-                type="button"
-                onClick={() => setSelectedDate(date)}
-                className={getDateFilterClassName(selectedDate === date)}
-              >
-                {formatShortDate(date)}
-              </Button>
-            ))}
-          </div>
+          <DateFilter
+            availableDates={availableDates}
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+          />
 
           <div className="max-w-full space-y-4 overflow-hidden">
             {filteredGuesses.length === 0 ? (
@@ -127,99 +113,15 @@ export function MyGuesses() {
                 description="Não existem jogos disponíveis para esta data."
               />
             ) : (
-              filteredGuesses.map((guess) => {
-                const currentGuess = editableGuesses[guess.id];
-
-                return (
-                  <Card key={guess.id}>
-                    <div className="mb-4 flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-app-primary">
-                          {guess.game.league.round}
-                        </p>
-
-                        <p className={theme.text.subtitle}>
-                          {formatGameDate(guess.game.date)} •{" "}
-                          {guess.game.venue.name}, {guess.game.venue.city}
-                        </p>
-                      </div>
-
-                      {!guess.game.canGuess && (
-                        <span className="shrink-0 rounded-full bg-app-card-soft px-2 py-1 text-xs font-semibold text-app-muted md:px-3">
-                          Bloqueado
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-2 overflow-hidden">
-                      <GameTeam
-                        name={guess.game.teams.home.name}
-                        logo={guess.game.teams.home.logo}
-                      />
-
-                      <div className="flex w-32 shrink-0 items-center justify-center gap-1 md:w-auto">
-                        <Input
-                          type="number"
-                          min="0"
-                          disabled={!guess.game.canGuess}
-                          value={currentGuess.homeGuess ?? ""}
-                          onChange={(event) =>
-                            handleGuessChange(
-                              guess.id,
-                              "homeGuess",
-                              event.target.value,
-                            )
-                          }
-                          className={getScoreInputClassName(
-                            guess.game.canGuess,
-                          )}
-                        />
-
-                        <span className="font-bold text-app-muted">x</span>
-
-                        <Input
-                          type="number"
-                          min="0"
-                          disabled={!guess.game.canGuess}
-                          value={currentGuess.awayGuess ?? ""}
-                          onChange={(event) =>
-                            handleGuessChange(
-                              guess.id,
-                              "awayGuess",
-                              event.target.value,
-                            )
-                          }
-                          className={getScoreInputClassName(
-                            guess.game.canGuess,
-                          )}
-                        />
-                      </div>
-
-                      <GameTeam
-                        name={guess.game.teams.away.name}
-                        logo={guess.game.teams.away.logo}
-                        alignRight
-                      />
-                    </div>
-
-                    <div className="mt-4 flex justify-end">
-                      {guess.game.canGuess ? (
-                        <button
-                          type="button"
-                          onClick={() => handleSaveGuess(guess)}
-                          className="cursor-pointer rounded-xl bg-app-primary px-4 py-2 text-sm font-semibold text-white shadow-glow-green transition hover:brightness-110"
-                        >
-                          Salvar palpite
-                        </button>
-                      ) : (
-                        <p className={theme.text.subtitle}>
-                          Este palpite não pode mais ser alterado.
-                        </p>
-                      )}
-                    </div>
-                  </Card>
-                );
-              })
+              filteredGuesses.map((guess) => (
+                <GuessCard
+                  key={guess.id}
+                  guess={guess}
+                  currentGuess={editableGuesses[guess.id]}
+                  onGuessChange={handleGuessChange}
+                  onSaveGuess={handleSaveGuess}
+                />
+              ))
             )}
           </div>
         </section>
@@ -236,6 +138,135 @@ export function MyGuesses() {
   );
 }
 
+type DateFilterProps = {
+  availableDates: string[];
+  selectedDate: string;
+  onSelectDate: (date: string) => void;
+};
+
+function DateFilter({
+  availableDates,
+  selectedDate,
+  onSelectDate,
+}: DateFilterProps) {
+  return (
+    <div className="-mx-1 mb-4 flex max-w-full gap-2 overflow-x-auto px-1 pb-1">
+      <Button
+        type="button"
+        onClick={() => onSelectDate("all")}
+        variant={selectedDate === "all" ? "primary" : "secondary"}
+        className="shrink-0 rounded-full"
+      >
+        Todos
+      </Button>
+
+      {availableDates.map((date) => (
+        <Button
+          key={date}
+          type="button"
+          onClick={() => onSelectDate(date)}
+          variant={selectedDate === date ? "primary" : "secondary"}
+          className="shrink-0 rounded-full"
+        >
+          {formatShortDate(date)}
+        </Button>
+      ))}
+    </div>
+  );
+}
+
+type GuessCardProps = {
+  guess: MyGuess;
+  currentGuess: EditableGuess;
+  onGuessChange: (
+    guessId: string,
+    field: keyof EditableGuess,
+    value: string,
+  ) => void;
+  onSaveGuess: (guess: MyGuess) => void;
+};
+
+function GuessCard({
+  guess,
+  currentGuess,
+  onGuessChange,
+  onSaveGuess,
+}: GuessCardProps) {
+  return (
+    <Card>
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-app-primary">
+            {guess.game.league.round}
+          </p>
+
+          <p className={theme.text.subtitle}>
+            {formatGameDateTime(guess.game.date)} • {guess.game.venue.name},{" "}
+            {guess.game.venue.city}
+          </p>
+        </div>
+
+        {!guess.game.canGuess && (
+          <span className="shrink-0 rounded-full bg-app-card-soft px-2 py-1 text-xs font-semibold text-app-muted md:px-3">
+            Bloqueado
+          </span>
+        )}
+      </div>
+
+      <div className="grid min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-2 overflow-hidden">
+        <GameTeam
+          name={guess.game.teams.home.name}
+          logo={guess.game.teams.home.logo}
+        />
+
+        <div className="flex w-32 shrink-0 items-center justify-center gap-1 md:w-auto">
+          <Input
+            type="number"
+            min="0"
+            disabled={!guess.game.canGuess}
+            value={currentGuess.homeGuess ?? ""}
+            onChange={(event) =>
+              onGuessChange(guess.id, "homeGuess", event.target.value)
+            }
+            className={getScoreInputClassName(guess.game.canGuess)}
+          />
+
+          <span className="font-bold text-app-muted">x</span>
+
+          <Input
+            type="number"
+            min="0"
+            disabled={!guess.game.canGuess}
+            value={currentGuess.awayGuess ?? ""}
+            onChange={(event) =>
+              onGuessChange(guess.id, "awayGuess", event.target.value)
+            }
+            className={getScoreInputClassName(guess.game.canGuess)}
+          />
+        </div>
+
+        <GameTeam
+          name={guess.game.teams.away.name}
+          logo={guess.game.teams.away.logo}
+          alignRight
+        />
+      </div>
+
+      <div className="mt-4 flex justify-end">
+        {guess.game.canGuess ? (
+          <Button type="button" onClick={() => onSaveGuess(guess)}>
+            Salvar palpite
+          </Button>
+        ) : (
+          <p className={theme.text.subtitle}>
+            Este palpite não pode mais ser alterado.
+          </p>
+        )}
+      </div>
+    </Card>
+  );
+}
+
 function getAvailableDates(guesses: MyGuess[]) {
   return Array.from(
     new Set(guesses.map((guess) => getDateKey(guess.game.date))),
@@ -244,45 +275,6 @@ function getAvailableDates(guesses: MyGuess[]) {
 
 function getDateKey(date: string) {
   return date.slice(0, 10);
-}
-
-function formatShortDate(date: string) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-  }).format(new Date(`${date}T00:00:00`));
-}
-
-function formatGameDate(date: string) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
-}
-
-function getTabClassName(isActive: boolean) {
-  return `
-    cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold transition
-    ${
-      isActive
-        ? "bg-app-primary text-white shadow-glow-green"
-        : "bg-app-surface text-app-muted hover:bg-app-card-soft hover:text-app-text"
-    }
-  `;
-}
-
-function getDateFilterClassName(isActive: boolean) {
-  return `
-    shrink-0 cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition
-    ${
-      isActive
-        ? "bg-app-primary text-white shadow-glow-green"
-        : "bg-app-surface text-app-muted hover:bg-app-card-soft hover:text-app-text"
-    }
-  `;
 }
 
 function getScoreInputClassName(canGuess: boolean) {
