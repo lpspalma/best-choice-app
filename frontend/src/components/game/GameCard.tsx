@@ -1,8 +1,12 @@
-import type { FixtureStatus, Game } from "../../types/game";
 import { formatGameDate } from "../../utils/date";
 import { theme } from "../../styles/theme";
 import { Card } from "../ui/Card";
 import { GameTeam } from "./GameTeam";
+import type { Game } from "../../types/game";
+import {
+  getGameStatusClassName,
+  getGameStatusLabel,
+} from "../../utils/game.ts";
 
 type GameCardProps = {
   game: Game;
@@ -24,8 +28,8 @@ export function GameCard({ game }: GameCardProps) {
           </p>
         </div>
 
-        <span className={getStatusClassName(game.status.short)}>
-          {getStatusLabel(game.status.short)}
+        <span className={getGameStatusClassName(game.status.short)}>
+          {getGameStatusLabel(game)}
         </span>
       </div>
 
@@ -64,36 +68,4 @@ export function GameCard({ game }: GameCardProps) {
       </div>
     </Card>
   );
-}
-
-function getStatusLabel(status: FixtureStatus) {
-  const labels: Record<FixtureStatus, string> = {
-    NS: "Não iniciado",
-    "1H": "Ao vivo",
-    HT: "Intervalo",
-    "2H": "Ao vivo",
-    ET: "Ao vivo",
-    P: "Ao vivo",
-    FT: "Encerrado",
-  };
-
-  return labels[status];
-}
-
-function getStatusClassName(status: FixtureStatus) {
-  const baseClass = "shrink-0 rounded-full px-3 py-1 text-xs font-semibold";
-
-  if (status === "NS") {
-    return `${baseClass} bg-app-surface text-app-muted`;
-  }
-
-  if (status === "FT") {
-    return `${baseClass} bg-app-card-soft text-app-subtle`;
-  }
-
-  if (status === "HT") {
-    return `${baseClass} bg-app-gold/15 text-app-gold`;
-  }
-
-  return `${baseClass} bg-app-danger/15 text-app-danger`;
 }
