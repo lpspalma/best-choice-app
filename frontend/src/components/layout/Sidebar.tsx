@@ -1,13 +1,9 @@
-import { LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import { navigationLinks } from "../../config/navigation";
-import { useAuth } from "../../context/useAuth";
 import { theme } from "../../styles/theme";
 
 export function Sidebar() {
-  const { logout } = useAuth();
-
   return (
     <aside className={theme.nav.sidebar}>
       <div className="mb-10">
@@ -38,21 +34,6 @@ export function Sidebar() {
             </NavLink>
           ))}
       </nav>
-
-      <button
-        onClick={logout}
-        className={`
-          mt-6
-          ${theme.nav.navItem}
-          text-app-muted
-          hover:bg-app-dangerSoft
-          hover:text-app-danger
-        `}
-      >
-        <LogOut size={20} />
-
-        <span>Sair</span>
-      </button>
     </aside>
   );
 }

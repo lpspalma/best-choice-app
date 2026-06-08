@@ -1,5 +1,5 @@
 import { PageContainer } from "../components/layout/PageContainer";
-import { Card } from "../components/ui/Card";
+import { UserGuessesList } from "../components/guesses/UserGuessesList";
 import { PageHeader } from "../components/ui/PageHeader";
 
 export function UserGuesses() {
@@ -10,9 +10,7 @@ export function UserGuesses() {
         description="Veja os palpites dos outros participantes."
       />
 
-      <Card>
-        <p>Conteúdo em construção.</p>
-      </Card>
+      <UserGuessesList />
     </PageContainer>
   );
 }

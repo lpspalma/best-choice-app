@@ -1,18 +1,27 @@
-import { PageContainer } from "../components/layout/PageContainer";
-import { Card } from "../components/ui/Card";
-import { PageHeader } from "../components/ui/PageHeader";
+import { LogOut } from "lucide-react";
+
+import { useAuth } from "../context/useAuth";
+import { Button } from "../components/ui/Button";
 
 export function Profile() {
-  return (
-    <PageContainer>
-      <PageHeader
-        title="Profile"
-        description="Manage your account information."
-      />
+  const { logout, user } = useAuth();
 
-      <Card>
-        <p className="text-slate-400">Profile content will be created here.</p>
-      </Card>
-    </PageContainer>
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-app-text">Perfil</h1>
+        <p className="text-app-text-muted">{user?.email}</p>
+      </div>
+
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={logout}
+        className="w-full justify-center text-app-danger hover:bg-app-danger-soft"
+      >
+        <LogOut size={18} />
+        Sair
+      </Button>
+    </div>
   );
 }
