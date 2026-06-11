@@ -3,10 +3,8 @@ import { GameTeam } from "../game/GameTeam";
 import type { StandingGroup } from "../../types/standing";
 
 import { theme } from "../../styles/theme";
-import {
-  translateStandingDescription,
-  translateTeamName,
-} from "./worldCupTable.utils";
+import { translateStandingDescription } from "./worldCupTable.utils";
+import { translateTeamName } from "../../utils/worldCup";
 
 type StandingsTableProps = {
   group: StandingGroup;

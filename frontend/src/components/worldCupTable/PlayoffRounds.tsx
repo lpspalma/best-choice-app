@@ -7,7 +7,7 @@ import type { Game } from "../../types/game";
 
 import { theme } from "../../styles/theme";
 import { PlayoffGameCard } from "./PlayoffGameCard";
-import { translateRound } from "./worldCupTable.utils";
+import { translateRound } from "../../utils/worldCup";
 
 const roundOrder = [
   "Round of 32",
