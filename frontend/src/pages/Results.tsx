@@ -20,23 +20,25 @@ export function Results() {
   const [selectedDate, setSelectedDate] = useState(defaultDate);
   const [teamSearch, setTeamSearch] = useState("");
 
-  const filteredResults = mockResults.filter((game) => {
-    const translatedHomeTeam = translateTeamName(game.teams.home.name);
-    const translatedAwayTeam = translateTeamName(game.teams.away.name);
+  const filteredResults = mockResults
+    .filter((game) => {
+      const translatedHomeTeam = translateTeamName(game.teams.home.name);
+      const translatedAwayTeam = translateTeamName(game.teams.away.name);
 
-    const normalizedSearch = normalizeText(teamSearch.trim());
+      const normalizedSearch = normalizeText(teamSearch.trim());
 
-    const matchesTeam =
-      normalizedSearch === "" ||
-      normalizeText(translatedHomeTeam).includes(normalizedSearch) ||
-      normalizeText(translatedAwayTeam).includes(normalizedSearch);
+      const matchesTeam =
+        normalizedSearch === "" ||
+        normalizeText(translatedHomeTeam).includes(normalizedSearch) ||
+        normalizeText(translatedAwayTeam).includes(normalizedSearch);
 
-    if (normalizedSearch !== "") {
-      return matchesTeam;
-    }
+      if (normalizedSearch !== "") {
+        return matchesTeam;
+      }
 
-    return getDateKey(game.date) === selectedDate;
-  });
+      return getDateKey(game.date) === selectedDate;
+    })
+    .sort((a, b) => b.timestamp - a.timestamp);
 
   return (
     <PageContainer>
@@ -58,6 +60,12 @@ export function Results() {
           value={teamSearch}
           onChange={(event) => setTeamSearch(event.target.value)}
         />
+
+        {teamSearch.trim() !== "" && (
+          <p className={`mt-2 text-xs ${theme.text.subtle}`}>
+            Exibindo todos os resultados encontrados para esta seleção.
+          </p>
+        )}
       </div>
 
       <section className="space-y-4">
@@ -106,6 +114,12 @@ function ResultCard({ game }: ResultCardProps) {
             name={translateTeamName(game.teams.home.name)}
             logo={game.teams.home.logo}
           />
+
+          {game.teams.home.winner && (
+            <p className="mt-2 text-xs font-semibold text-app-primary">
+              Vencedor
+            </p>
+          )}
         </div>
 
         <div className="text-center">
@@ -122,23 +136,34 @@ function ResultCard({ game }: ResultCardProps) {
             logo={game.teams.away.logo}
             alignRight
           />
+
+          {game.teams.away.winner && (
+            <p className="mt-2 text-right text-xs font-semibold text-app-primary">
+              Vencedor
+            </p>
+          )}
         </div>
       </div>
 
       {(game.score?.extratime || game.score?.penalty) && (
-        <div className="rounded-2xl bg-app-surface p-3 text-xs text-app-muted">
+        <div className="grid gap-2 rounded-2xl bg-app-surface p-3 text-xs text-app-muted md:grid-cols-2">
           {game.score.extratime && (
-            <p>
-              Prorrogação: {game.score.extratime.home ?? 0} x{" "}
-              {game.score.extratime.away ?? 0}
-            </p>
+            <div>
+              <p className="font-semibold text-app-text">Prorrogação</p>
+              <p>
+                {game.score.extratime.home ?? 0} x{" "}
+                {game.score.extratime.away ?? 0}
+              </p>
+            </div>
           )}
 
           {game.score.penalty && (
-            <p>
-              Pênaltis: {game.score.penalty.home ?? 0} x{" "}
-              {game.score.penalty.away ?? 0}
-            </p>
+            <div>
+              <p className="font-semibold text-app-text">Pênaltis</p>
+              <p>
+                {game.score.penalty.home ?? 0} x {game.score.penalty.away ?? 0}
+              </p>
+            </div>
           )}
         </div>
       )}
