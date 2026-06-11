@@ -21,17 +21,21 @@ export function Results() {
   const [teamSearch, setTeamSearch] = useState("");
 
   const filteredResults = mockResults.filter((game) => {
-    const matchesDate = getDateKey(game.date) === selectedDate;
-
     const translatedHomeTeam = translateTeamName(game.teams.home.name);
     const translatedAwayTeam = translateTeamName(game.teams.away.name);
 
-    const matchesTeam =
-      teamSearch.trim() === "" ||
-      translatedHomeTeam.toLowerCase().includes(teamSearch.toLowerCase()) ||
-      translatedAwayTeam.toLowerCase().includes(teamSearch.toLowerCase());
+    const normalizedSearch = normalizeText(teamSearch.trim());
 
-    return matchesDate && matchesTeam;
+    const matchesTeam =
+      normalizedSearch === "" ||
+      normalizeText(translatedHomeTeam).includes(normalizedSearch) ||
+      normalizeText(translatedAwayTeam).includes(normalizedSearch);
+
+    if (normalizedSearch !== "") {
+      return matchesTeam;
+    }
+
+    return getDateKey(game.date) === selectedDate;
   });
 
   return (
@@ -60,7 +64,7 @@ export function Results() {
         {filteredResults.length === 0 ? (
           <EmptyState
             title="Nenhum resultado encontrado"
-            description="Não encontramos jogos finalizados para esta data e seleção."
+            description="Não encontramos jogos finalizados para esta busca."
           />
         ) : (
           filteredResults.map((game) => (
@@ -170,4 +174,11 @@ function getWinnerClassName(winner?: boolean | null) {
   return winner
     ? "rounded-2xl bg-app-primary/10 p-2 ring-1 ring-app-primary/30"
     : "p-2";
+}
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
