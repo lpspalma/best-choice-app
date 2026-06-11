@@ -11,7 +11,8 @@ import { EmptyState } from "../components/ui/EmptyState";
 import { mockMyGuesses } from "../mocks/myGuesses.mock";
 import { theme } from "../styles/theme";
 import type { MyGuess } from "../types/myGuess";
-import { formatGameDateTime, formatShortDate } from "../utils/date";
+import { formatGameDateTime } from "../utils/date";
+import { DateTabs } from "../components/ui/DateTabs";
 
 type GuessTab = "my-guesses" | "user-guesses";
 
@@ -100,10 +101,11 @@ export function MyGuesses() {
         <section
           className={activeTab === "my-guesses" ? "block" : "hidden md:block"}
         >
-          <DateFilter
-            availableDates={availableDates}
+          <DateTabs
+            dates={availableDates}
             selectedDate={selectedDate}
             onSelectDate={setSelectedDate}
+            showAllOption
           />
 
           <div className="max-w-full space-y-4 overflow-hidden">
@@ -135,43 +137,6 @@ export function MyGuesses() {
         </section>
       </div>
     </PageContainer>
-  );
-}
-
-type DateFilterProps = {
-  availableDates: string[];
-  selectedDate: string;
-  onSelectDate: (date: string) => void;
-};
-
-function DateFilter({
-  availableDates,
-  selectedDate,
-  onSelectDate,
-}: DateFilterProps) {
-  return (
-    <div className="-mx-1 mb-4 flex max-w-full gap-2 overflow-x-auto px-1 pb-1">
-      <Button
-        type="button"
-        onClick={() => onSelectDate("all")}
-        variant={selectedDate === "all" ? "primary" : "secondary"}
-        className="shrink-0 rounded-full"
-      >
-        Todos
-      </Button>
-
-      {availableDates.map((date) => (
-        <Button
-          key={date}
-          type="button"
-          onClick={() => onSelectDate(date)}
-          variant={selectedDate === date ? "primary" : "secondary"}
-          className="shrink-0 rounded-full"
-        >
-          {formatShortDate(date)}
-        </Button>
-      ))}
-    </div>
   );
 }
 

@@ -5,13 +5,13 @@ import { PageContainer } from "../components/layout/PageContainer";
 import { Card } from "../components/ui/Card";
 import { EmptyState } from "../components/ui/EmptyState";
 import { Input } from "../components/ui/Input";
-import { Button } from "../components/ui/Button";
 import { PageHeader } from "../components/ui/PageHeader";
 import { mockResults } from "../mocks/results.mock";
 import { theme } from "../styles/theme";
 import type { Game } from "../types/game";
-import { formatGameDateTime, formatShortDate } from "../utils/date";
+import { formatGameDateTime } from "../utils/date";
 import { translateRound, translateTeamName } from "../utils/worldCup";
+import { DateTabs } from "../components/ui/DateTabs";
 
 export function Results() {
   const availableDates = getAvailableDates(mockResults);
@@ -41,8 +41,8 @@ export function Results() {
         description="Veja os resultados dos jogos finalizados."
       />
 
-      <DateFilter
-        availableDates={availableDates}
+      <DateTabs
+        dates={availableDates}
         selectedDate={selectedDate}
         onSelectDate={setSelectedDate}
       />
@@ -69,34 +69,6 @@ export function Results() {
         )}
       </section>
     </PageContainer>
-  );
-}
-
-type DateFilterProps = {
-  availableDates: string[];
-  selectedDate: string;
-  onSelectDate: (date: string) => void;
-};
-
-function DateFilter({
-  availableDates,
-  selectedDate,
-  onSelectDate,
-}: DateFilterProps) {
-  return (
-    <div className="-mx-1 mb-4 flex max-w-full gap-2 overflow-x-auto px-1 pb-1">
-      {availableDates.map((date) => (
-        <Button
-          key={date}
-          type="button"
-          onClick={() => onSelectDate(date)}
-          variant={selectedDate === date ? "primary" : "secondary"}
-          className="shrink-0 rounded-full"
-        >
-          {formatShortDate(date)}
-        </Button>
-      ))}
-    </div>
   );
 }
 
