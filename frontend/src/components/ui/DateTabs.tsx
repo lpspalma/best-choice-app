@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { formatShortDate } from "../../utils/date";
+import { formatShortDate } from "../../utils/formatters/date";
 
 type DateTabsProps = {
   dates: string[];

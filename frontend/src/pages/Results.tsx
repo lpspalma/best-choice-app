@@ -9,9 +9,10 @@ import { PageHeader } from "../components/ui/PageHeader";
 import { mockResults } from "../mocks/results.mock";
 import { theme } from "../styles/theme";
 import type { Game } from "../types/game";
-import { formatGameDateTime } from "../utils/date";
-import { translateRound, translateTeamName } from "../utils/worldCup";
+import { formatGameDateTime } from "../utils/formatters/date";
 import { DateTabs } from "../components/ui/DateTabs";
+import { getTeamNamePt } from "../utils/translators/team";
+import { getRoundLabel } from "../utils/translators/round";
 
 export function Results() {
   const availableDates = getAvailableDates(mockResults);
@@ -22,8 +23,8 @@ export function Results() {
 
   const filteredResults = mockResults
     .filter((game) => {
-      const translatedHomeTeam = translateTeamName(game.teams.home.name);
-      const translatedAwayTeam = translateTeamName(game.teams.away.name);
+      const translatedHomeTeam = getTeamNamePt(game.teams.home.name);
+      const translatedAwayTeam = getTeamNamePt(game.teams.away.name);
 
       const normalizedSearch = normalizeText(teamSearch.trim());
 
@@ -94,7 +95,7 @@ function ResultCard({ game }: ResultCardProps) {
       <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-semibold text-app-primary">
-            {translateRound(game.league.round)}
+            {getRoundLabel(game.league.round)}
           </p>
 
           <p className={theme.text.subtitle}>
@@ -111,7 +112,7 @@ function ResultCard({ game }: ResultCardProps) {
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className={getWinnerClassName(game.teams.home.winner)}>
           <GameTeam
-            name={translateTeamName(game.teams.home.name)}
+            name={getTeamNamePt(game.teams.home.name)}
             logo={game.teams.home.logo}
           />
 
@@ -132,7 +133,7 @@ function ResultCard({ game }: ResultCardProps) {
 
         <div className={getWinnerClassName(game.teams.away.winner)}>
           <GameTeam
-            name={translateTeamName(game.teams.away.name)}
+            name={getTeamNamePt(game.teams.away.name)}
             logo={game.teams.away.logo}
             alignRight
           />

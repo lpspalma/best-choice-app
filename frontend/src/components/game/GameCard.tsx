@@ -1,4 +1,4 @@
-import { formatGameDate } from "../../utils/date";
+import { formatGameDate } from "../../utils/formatters/date.ts";
 import { theme } from "../../styles/theme";
 import { Card } from "../ui/Card";
 import { GameTeam } from "./GameTeam";

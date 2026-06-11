@@ -7,7 +7,7 @@ import { getDashboardData } from "../services/dashboard.service";
 import { theme } from "../styles/theme";
 import type { DashboardData } from "../types/dashboard";
 import { Link } from "react-router-dom";
-import { formatGameDate, formatGameTime } from "../utils/date";
+import { formatGameDate, formatGameTime } from "../utils/formatters/date";
 import { LoadingState } from "../components/ui/LoadingState";
 import { DashboardSection } from "../components/dashboard/DashboardSection";
 import { EmptyState } from "../components/ui/EmptyState";

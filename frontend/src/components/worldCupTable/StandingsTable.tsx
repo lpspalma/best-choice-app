@@ -4,7 +4,7 @@ import type { StandingGroup } from "../../types/standing";
 
 import { theme } from "../../styles/theme";
 import { translateStandingDescription } from "./worldCupTable.utils";
-import { translateTeamName } from "../../utils/worldCup";
+import { getTeamNamePt } from "../../utils/translators/team";
 
 type StandingsTableProps = {
   group: StandingGroup;
@@ -49,7 +49,7 @@ export function StandingsTable({ group }: StandingsTableProps) {
 
                 <td className="py-4">
                   <GameTeam
-                    name={translateTeamName(standing.team.name)}
+                    name={getTeamNamePt(standing.team.name)}
                     logo={standing.team.logo}
                   />
                 </td>

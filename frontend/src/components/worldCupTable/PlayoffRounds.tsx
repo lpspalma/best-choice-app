@@ -7,7 +7,7 @@ import type { Game } from "../../types/game";
 
 import { theme } from "../../styles/theme";
 import { PlayoffGameCard } from "./PlayoffGameCard";
-import { translateRound } from "../../utils/worldCup";
+import { getRoundLabel } from "../../utils/translators/round";
 
 const roundOrder = [
   "Round of 32",
@@ -41,7 +41,7 @@ export function PlayoffRounds({
           return (
             <section key={round} className="space-y-3">
               <h2 className="text-lg font-bold text-app-text">
-                {translateRound(round)}
+                {getRoundLabel(round)}
               </h2>
 
               <Card>
@@ -77,7 +77,7 @@ export function PlayoffRounds({
 
               <div className="text-center">
                 <h2 className="text-lg font-bold text-app-text">
-                  {translateRound(round)}
+                  {getRoundLabel(round)}
                 </h2>
 
                 <p className={`text-xs ${theme.text.subtle}`}>

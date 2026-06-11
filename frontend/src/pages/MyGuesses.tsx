@@ -11,7 +11,7 @@ import { EmptyState } from "../components/ui/EmptyState";
 import { mockMyGuesses } from "../mocks/myGuesses.mock";
 import { theme } from "../styles/theme";
 import type { MyGuess } from "../types/myGuess";
-import { formatGameDateTime } from "../utils/date";
+import { formatGameDateTime } from "../utils/formatters/date";
 import { DateTabs } from "../components/ui/DateTabs";
 
 type GuessTab = "my-guesses" | "user-guesses";

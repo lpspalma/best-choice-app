@@ -4,7 +4,7 @@ import type { TeamStanding } from "../../types/standing";
 
 import { StatItem } from "./StatItem";
 import { translateStandingDescription } from "./worldCupTable.utils";
-import { translateTeamName } from "../../utils/worldCup";
+import { getTeamNamePt } from "../../utils/translators/team";
 
 type MobileStandingCardProps = {
   standing: TeamStanding;
@@ -28,7 +28,7 @@ export function MobileStandingCard({ standing }: MobileStandingCardProps) {
           </span>
 
           <GameTeam
-            name={translateTeamName(standing.team.name)}
+            name={getTeamNamePt(standing.team.name)}
             logo={standing.team.logo}
           />
         </div>

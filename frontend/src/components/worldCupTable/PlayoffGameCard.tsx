@@ -1,9 +1,13 @@
 import { GameTeam } from "../game/GameTeam";
 import { Card } from "../ui/Card";
 import type { Game } from "../../types/game";
-import { formatGameDate } from "../../utils/date";
-import { getGameStatusClassName, getGameStatusLabel } from "../../utils/game";
-import { translateRound, translateTeamName } from "../../utils/worldCup";
+import { formatGameDate } from "../../utils/formatters/date";
+import { getTeamNamePt } from "../../utils/translators/team";
+import { getRoundLabel } from "../../utils/translators/round";
+import {
+  getGameStatusClassName,
+  getGameStatusLabel,
+} from "../../utils/translators/gameStatus";
 
 type PlayoffGameCardProps = {
   game: Game;
@@ -23,7 +27,7 @@ export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-app-text">
-            {translateRound(game.league.round)}
+            {getRoundLabel(game.league.round)}
           </p>
 
           <p className="text-xs text-app-subtle">{formatGameDate(game.date)}</p>
@@ -40,7 +44,7 @@ export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
 
       <div className="space-y-3">
         <PlayoffTeamRow
-          name={translateTeamName(game.teams.home.name)}
+          name={getTeamNamePt(game.teams.home.name)}
           logo={game.teams.home.logo}
           score={game.goals.home}
           penaltyScore={game.score?.penalty?.home}
@@ -50,7 +54,7 @@ export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
         />
 
         <PlayoffTeamRow
-          name={translateTeamName(game.teams.away.name)}
+          name={getTeamNamePt(game.teams.away.name)}
           logo={game.teams.away.logo}
           score={game.goals.away}
           penaltyScore={game.score?.penalty?.away}

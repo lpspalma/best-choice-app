@@ -1,22 +1,17 @@
-import type { FixtureStatus, Game } from "../types/game";
+import { GAME_STATUS_LABELS_PT } from "../../constants/gameStatus";
+import type { Game } from "../../types/game";
 
 export function getGameStatusLabel(game: Game) {
   const { short, elapsed } = game.status;
 
-  const labels: Record<FixtureStatus, string> = {
-    NS: "Não iniciado",
-    "1H": elapsed ? `${elapsed}'` : "Ao vivo",
-    HT: "Intervalo",
-    "2H": elapsed ? `${elapsed}'` : "Ao vivo",
-    ET: "Prorrogação",
-    P: "Pênaltis",
-    FT: "Encerrado",
-  };
+  if ((short === "1H" || short === "2H") && elapsed) {
+    return `${elapsed}'`;
+  }
 
-  return labels[short];
+  return GAME_STATUS_LABELS_PT[short];
 }
 
-export function getGameStatusClassName(status: FixtureStatus) {
+export function getGameStatusClassName(status: Game["status"]["short"]) {
   const baseClass = "shrink-0 rounded-full px-3 py-1 text-xs font-semibold";
 
   if (status === "NS") {
