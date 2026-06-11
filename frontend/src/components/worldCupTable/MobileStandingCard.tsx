@@ -3,10 +3,8 @@ import { GameTeam } from "../game/GameTeam";
 import type { TeamStanding } from "../../types/standing";
 
 import { StatItem } from "./StatItem";
-import {
-  translateStandingDescription,
-  translateTeamName,
-} from "./worldCupTable.utils";
+import { translateStandingDescription } from "./worldCupTable.utils";
+import { translateTeamName } from "../../utils/worldCup";
 
 type MobileStandingCardProps = {
   standing: TeamStanding;

@@ -1,12 +1,9 @@
 import { GameTeam } from "../game/GameTeam";
 import { Card } from "../ui/Card";
-
 import type { Game } from "../../types/game";
-
 import { formatGameDate } from "../../utils/date";
 import { getGameStatusClassName, getGameStatusLabel } from "../../utils/game";
-
-import { translateRound, translateTeamName } from "./worldCupTable.utils";
+import { translateRound, translateTeamName } from "../../utils/worldCup";
 
 type PlayoffGameCardProps = {
   game: Game;
