@@ -1,6 +1,6 @@
 import { theme } from "../../styles/theme";
 import type { Game } from "../../types/game";
-import { formatGameDate } from "../../utils/formatters/date";
+import { formatGameDate, formatGameTime } from "../../utils/formatters/date";
 import { getRoundLabel } from "../../utils/translators/round";
 import { Card } from "../ui/Card";
 import { GameStatusBadge } from "./GameStatusBadge";
@@ -18,12 +18,14 @@ export function GameCard({ game }: GameCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-app-text">
-            {formatGameDate(game.date)}
+            {formatGameDate(game.date)} às {formatGameTime(game.date)}
           </p>
 
-          <p className={`text-xs ${theme.text.subtle}`}>
-            {game.venue.name} • {game.venue.city}
-          </p>
+          {game.venue && (
+            <p className={`text-xs ${theme.text.subtle}`}>
+              {game.venue.name} • {game.venue.city}
+            </p>
+          )}
         </div>
 
         <GameStatusBadge game={game} />
