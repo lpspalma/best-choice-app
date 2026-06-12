@@ -7,7 +7,6 @@ import { getDashboardData } from "../services/dashboard.service";
 import { theme } from "../styles/theme";
 import type { DashboardData } from "../types/dashboard";
 import { Link } from "react-router-dom";
-import { formatGameDate, formatGameTime } from "../utils/formatters/date";
 import { LoadingState } from "../components/ui/LoadingState";
 import { DashboardSection } from "../components/dashboard/DashboardSection";
 import { EmptyState } from "../components/ui/EmptyState";
@@ -15,6 +14,7 @@ import { GameTeam } from "../components/game/GameTeam";
 import { GameScore } from "../components/game/GameScore";
 import { RankingRow } from "../components/ranking/RankingRow";
 import { getPositionLabel } from "../utils/ranking";
+import { GameCard } from "../components/game/GameCard";
 
 export function Dashboard() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
@@ -101,31 +101,7 @@ export function Dashboard() {
           ) : (
             <div className="space-y-3">
               {dashboardData.nextGames.map((game) => (
-                <div
-                  key={game.id}
-                  className="rounded-xl border border-app-border bg-app-surface p-3 md:p-4"
-                >
-                  <p className="mb-2 text-center text-xs text-app-subtle">
-                    {formatGameDate(game.date)} às {formatGameTime(game.date)}
-                  </p>
-
-                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-3">
-                    <GameTeam
-                      name={game.teams.home.name}
-                      logo={game.teams.home.logo}
-                    />
-
-                    <span className="text-center text-xs text-app-muted md:text-sm">
-                      vs
-                    </span>
-
-                    <GameTeam
-                      name={game.teams.away.name}
-                      logo={game.teams.away.logo}
-                      alignRight
-                    />
-                  </div>
-                </div>
+                <GameCard key={game.id} game={game} />
               ))}
             </div>
           )}
