@@ -99,8 +99,8 @@ function ResultCard({ game }: ResultCardProps) {
           </p>
 
           <p className={theme.text.subtitle}>
-            {formatGameDateTime(game.date)} • {game.venue.name},{" "}
-            {game.venue.city}
+            {formatGameDateTime(game.date)}
+            {game.venue && ` • ${game.venue.name}, ${game.venue.city}`}
           </p>
         </div>
 

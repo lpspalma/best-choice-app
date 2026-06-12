@@ -27,3 +27,13 @@ export function formatGameDateTime(date: string) {
     minute: "2-digit",
   }).format(new Date(date));
 }
+
+export function getDateKey(date: string) {
+  const parsedDate = new Date(date);
+
+  return new Intl.DateTimeFormat("en-CA").format(parsedDate);
+}
+
+export function getTodayKey() {
+  return new Intl.DateTimeFormat("en-CA").format(new Date());
+}
