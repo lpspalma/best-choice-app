@@ -5,14 +5,7 @@ import { EmptyState } from "../components/ui/EmptyState";
 import { PageHeader } from "../components/ui/PageHeader";
 import { mockRanking } from "../mocks/ranking.mock";
 import { theme } from "../styles/theme";
-
-function getPositionLabel(position: number) {
-  if (position === 1) return "🥇";
-  if (position === 2) return "🥈";
-  if (position === 3) return "🥉";
-
-  return `#${position}`;
-}
+import { getPositionLabel } from "../utils/ranking";
 
 export function Ranking() {
   const ranking = mockRanking;

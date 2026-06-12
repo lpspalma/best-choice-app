@@ -13,6 +13,8 @@ import { DashboardSection } from "../components/dashboard/DashboardSection";
 import { EmptyState } from "../components/ui/EmptyState";
 import { GameTeam } from "../components/game/GameTeam";
 import { GameScore } from "../components/game/GameScore";
+import { RankingRow } from "../components/ranking/RankingRow";
+import { getPositionLabel } from "../utils/ranking";
 
 export function Dashboard() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
@@ -141,22 +143,13 @@ export function Dashboard() {
           ) : (
             <div className="space-y-3">
               {dashboardData.quickRanking.map((user) => (
-                <div
+                <RankingRow
                   key={user.id}
-                  className="flex items-center justify-between rounded-xl border border-app-border bg-app-surface p-3"
-                >
-                  <div>
-                    <p className="font-medium text-app-text">
-                      #{user.position} {user.name}
-                    </p>
-
-                    <p className="text-sm text-app-muted">
-                      {user.exactScores} placares exatos
-                    </p>
-                  </div>
-
-                  <p className="font-bold text-app-gold">{user.points} pts</p>
-                </div>
+                  user={user}
+                  isLeader={user.position === 1}
+                  isCurrentUser={false}
+                  positionLabel={getPositionLabel(user.position)}
+                />
               ))}
             </div>
           )}
