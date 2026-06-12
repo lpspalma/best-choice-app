@@ -47,6 +47,5 @@ router.post(
   verifyResetCode,
 );
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
-router.post("/google", validate(googleLoginSchema), googleLogin);
 
 export default router;

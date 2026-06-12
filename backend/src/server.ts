@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes";
 import { errorHandler } from "./middlewares/errorHandler";
+import worldCupRoutes from "./routes/worldCup.routes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/world-cup", worldCupRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;

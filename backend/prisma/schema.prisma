@@ -39,3 +39,49 @@ model PasswordResetCode {
   @@index([email])
   @@index([code])
 }
+
+model Team {
+  id         String   @id @default(cuid())
+  externalId Int     @unique
+  name       String
+  logo       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  homeGames  Game[] @relation("HomeTeam")
+  awayGames  Game[] @relation("AwayTeam")
+}
+
+model Game {
+  id          String   @id @default(cuid())
+  externalId  Int      @unique
+  date        DateTime
+  timestamp   Int
+  statusLong  String
+  statusShort String
+  elapsed     Int?
+
+  round       String
+
+  homeTeamId  String
+  awayTeamId  String
+
+  homeGoals   Int?
+  awayGoals   Int?
+
+  halfHome    Int?
+  halfAway    Int?
+  fullHome    Int?
+  fullAway    Int?
+
+  canGuess    Boolean  @default(true)
+
+  homeTeam    Team @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam    Team @relation("AwayTeam", fields: [awayTeamId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@index([statusShort])
+}
