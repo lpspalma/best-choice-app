@@ -1,12 +1,10 @@
-import { formatGameDate } from "../../utils/formatters/date.ts";
 import { theme } from "../../styles/theme";
-import { Card } from "../ui/Card";
-import { GameTeam } from "./GameTeam";
 import type { Game } from "../../types/game";
-import {
-  getGameStatusClassName,
-  getGameStatusLabel,
-} from "../../utils/game.ts";
+import { formatGameDate } from "../../utils/formatters/date";
+import { getRoundLabel } from "../../utils/translators/round";
+import { Card } from "../ui/Card";
+import { GameStatusBadge } from "./GameStatusBadge";
+import { GameTeam } from "./GameTeam";
 
 type GameCardProps = {
   game: Game;
@@ -28,9 +26,7 @@ export function GameCard({ game }: GameCardProps) {
           </p>
         </div>
 
-        <span className={getGameStatusClassName(game.status.short)}>
-          {getGameStatusLabel(game)}
-        </span>
+        <GameStatusBadge game={game} />
       </div>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
@@ -54,7 +50,9 @@ export function GameCard({ game }: GameCardProps) {
       </div>
 
       <div className="flex flex-col gap-2 border-t border-app-border pt-4 md:flex-row md:items-center md:justify-between">
-        <p className={`text-xs ${theme.text.subtle}`}>{game.league.round}</p>
+        <p className={`text-xs ${theme.text.subtle}`}>
+          {getRoundLabel(game.league.round)}
+        </p>
 
         <span
           className={

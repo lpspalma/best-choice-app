@@ -11,6 +11,8 @@ import { formatGameDate, formatGameTime } from "../utils/formatters/date";
 import { LoadingState } from "../components/ui/LoadingState";
 import { DashboardSection } from "../components/dashboard/DashboardSection";
 import { EmptyState } from "../components/ui/EmptyState";
+import { GameTeam } from "../components/game/GameTeam";
+import { GameScore } from "../components/game/GameScore";
 
 export function Dashboard() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
@@ -106,33 +108,20 @@ export function Dashboard() {
                   </p>
 
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 md:gap-3">
-                    <div className="flex min-w-0 items-center gap-2">
-                      <img
-                        src={game.teams.home.logo}
-                        alt={game.teams.home.name}
-                        className="h-7 w-7 shrink-0 md:h-8 md:w-8"
-                      />
+                    <GameTeam
+                      name={game.teams.home.name}
+                      logo={game.teams.home.logo}
+                    />
 
-                      <span className="truncate text-sm font-medium text-app-text md:text-base">
-                        {game.teams.home.name}
-                      </span>
-                    </div>
-
-                    <span className="text-xs text-app-muted md:text-sm">
+                    <span className="text-center text-xs text-app-muted md:text-sm">
                       vs
                     </span>
 
-                    <div className="flex min-w-0 items-center justify-end gap-2">
-                      <span className="truncate text-right text-sm font-medium text-app-text md:text-base">
-                        {game.teams.away.name}
-                      </span>
-
-                      <img
-                        src={game.teams.away.logo}
-                        alt={game.teams.away.name}
-                        className="h-7 w-7 shrink-0 md:h-8 md:w-8"
-                      />
-                    </div>
+                    <GameTeam
+                      name={game.teams.away.name}
+                      logo={game.teams.away.logo}
+                      alignRight
+                    />
                   </div>
                 </div>
               ))}
@@ -198,36 +187,24 @@ export function Dashboard() {
                   key={guess.id}
                   className="rounded-xl border border-app-border bg-app-surface px-3 py-2"
                 >
-                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                    <div className="flex min-w-0 items-center gap-1.5">
-                      <img
-                        src={guess.game.teams.home.logo}
-                        alt={guess.game.teams.home.name}
-                        className="h-5 w-5 shrink-0 md:h-6 md:w-6"
-                      />
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                    <GameTeam
+                      name={guess.game.teams.home.name}
+                      logo={guess.game.teams.home.logo}
+                    />
 
-                      <span className="truncate text-xs font-medium text-app-text md:text-sm">
-                        {guess.game.teams.home.name}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-center gap-1 rounded-md bg-app-card-soft px-2 py-1 text-xs font-bold text-app-text md:text-sm">
-                      <span>{guess.homeGuess}</span>
-                      <span>x</span>
-                      <span>{guess.awayGuess}</span>
-                    </div>
-
-                    <div className="flex min-w-0 items-center justify-end gap-1.5">
-                      <span className="truncate text-right text-xs font-medium text-app-text md:text-sm">
-                        {guess.game.teams.away.name}
-                      </span>
-
-                      <img
-                        src={guess.game.teams.away.logo}
-                        alt={guess.game.teams.away.name}
-                        className="h-5 w-5 shrink-0 md:h-6 md:w-6"
+                    <div className="rounded-md bg-app-card-soft px-2 py-1">
+                      <GameScore
+                        homeScore={guess.homeGuess}
+                        awayScore={guess.awayGuess}
                       />
                     </div>
+
+                    <GameTeam
+                      name={guess.game.teams.away.name}
+                      logo={guess.game.teams.away.logo}
+                      alignRight
+                    />
                   </div>
                 </div>
               ))}
