@@ -3,8 +3,8 @@ import { GameTeam } from "../game/GameTeam";
 import type { TeamStanding } from "../../types/standing";
 
 import { StatItem } from "./StatItem";
-import { translateStandingDescription } from "./worldCupTable.utils";
 import { getTeamNamePt } from "../../utils/translators/team";
+import { getStandingDescriptionLabel } from "../../utils/translators/standing";
 
 type MobileStandingCardProps = {
   standing: TeamStanding;
@@ -55,7 +55,7 @@ export function MobileStandingCard({ standing }: MobileStandingCardProps) {
               : "bg-app-card-soft text-app-muted"
           }`}
         >
-          {translateStandingDescription(standing.description)}
+          {getStandingDescriptionLabel(standing.description)}
         </span>
       </div>
     </div>

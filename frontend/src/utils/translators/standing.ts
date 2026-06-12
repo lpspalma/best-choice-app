@@ -1,4 +1,4 @@
-export function translateStandingDescription(description?: string) {
+export function getStandingDescriptionLabel(description?: string) {
   if (!description) {
     return "Sem status";
   }

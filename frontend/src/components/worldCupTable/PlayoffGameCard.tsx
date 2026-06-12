@@ -2,7 +2,6 @@ import { GameTeam } from "../game/GameTeam";
 import { Card } from "../ui/Card";
 import type { Game } from "../../types/game";
 import { formatGameDate } from "../../utils/formatters/date";
-import { getTeamNamePt } from "../../utils/translators/team";
 import { getRoundLabel } from "../../utils/translators/round";
 import {
   getGameStatusClassName,
@@ -44,7 +43,7 @@ export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
 
       <div className="space-y-3">
         <PlayoffTeamRow
-          name={getTeamNamePt(game.teams.home.name)}
+          name={game.teams.home.name}
           logo={game.teams.home.logo}
           score={game.goals.home}
           penaltyScore={game.score?.penalty?.home}
@@ -54,7 +53,7 @@ export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
         />
 
         <PlayoffTeamRow
-          name={getTeamNamePt(game.teams.away.name)}
+          name={game.teams.away.name}
           logo={game.teams.away.logo}
           score={game.goals.away}
           penaltyScore={game.score?.penalty?.away}

@@ -14,9 +14,6 @@ import { GroupStandings } from "../components/worldCupTable/GroupStandings";
 export function WorldCupTable() {
   const [activeTab, setActiveTab] = useState<WorldCupTableTab>("groups");
   const [activeGroupIndex, setActiveGroupIndex] = useState(0);
-  const [activePlayoffIndexes, setActivePlayoffIndexes] = useState<
-    Record<string, number>
-  >({});
 
   const activeGroup = mockStandings[activeGroupIndex];
   const groupName = activeGroup?.[0]?.group ?? "Grupo";
@@ -28,6 +25,8 @@ export function WorldCupTable() {
     return groupName.replace("Group", "Grupo");
   }, [groupName]);
 
+  const [activePlayoffRoundIndex, setActivePlayoffRoundIndex] = useState(0);
+
   function handlePreviousGroup() {
     if (!canGoToPreviousGroup) return;
 
@@ -38,26 +37,6 @@ export function WorldCupTable() {
     if (!canGoToNextGroup) return;
 
     setActiveGroupIndex((currentIndex) => currentIndex + 1);
-  }
-
-  function handlePlayoffCarouselChange(
-    round: string,
-    direction: "previous" | "next",
-    gamesCount: number,
-  ) {
-    setActivePlayoffIndexes((currentIndexes) => {
-      const currentIndex = currentIndexes[round] ?? 0;
-
-      const nextIndex =
-        direction === "next"
-          ? Math.min(currentIndex + 1, gamesCount - 1)
-          : Math.max(currentIndex - 1, 0);
-
-      return {
-        ...currentIndexes,
-        [round]: nextIndex,
-      };
-    });
   }
 
   return (
@@ -85,8 +64,8 @@ export function WorldCupTable() {
       {activeTab === "playoffs" && (
         <PlayoffRounds
           games={mockPlayoffs}
-          activeIndexes={activePlayoffIndexes}
-          onCarouselChange={handlePlayoffCarouselChange}
+          activeRoundIndex={activePlayoffRoundIndex}
+          onRoundChange={setActivePlayoffRoundIndex}
         />
       )}
     </PageContainer>

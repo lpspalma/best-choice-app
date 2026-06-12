@@ -3,8 +3,8 @@ import { GameTeam } from "../game/GameTeam";
 import type { StandingGroup } from "../../types/standing";
 
 import { theme } from "../../styles/theme";
-import { translateStandingDescription } from "./worldCupTable.utils";
 import { getTeamNamePt } from "../../utils/translators/team";
+import { getStandingDescriptionLabel } from "../../utils/translators/standing";
 
 type StandingsTableProps = {
   group: StandingGroup;
@@ -94,7 +94,7 @@ export function StandingsTable({ group }: StandingsTableProps) {
                         : "bg-app-card-soft text-app-muted"
                     }`}
                   >
-                    {translateStandingDescription(standing.description)}
+                    {getStandingDescriptionLabel(standing.description)}
                   </span>
                 </td>
               </tr>
