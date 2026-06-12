@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  getTodayWorldCupGames,
+  getWorldCupGameDates,
   getWorldCupGamesByDate,
   getWorldCupGamesFromDb,
   getWorldCupMatches,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/worldCup.controller";
 
 const router = Router();
-router.get("/games/today", getTodayWorldCupGames);
+router.get("/games/dates", getWorldCupGameDates);
 router.get("/games/date/:date", getWorldCupGamesByDate);
 router.get("/matches", getWorldCupMatches);
 router.post("/sync", syncWorldCupMatches);

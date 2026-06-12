@@ -29,7 +29,7 @@ export const mockUserGuesses: UserGuess[] = [
 
       status: {
         long: "Not Started",
-        short: "NS",
+        short: "TIMED",
         elapsed: null,
       },
 
@@ -92,7 +92,7 @@ export const mockUserGuesses: UserGuess[] = [
 
       status: {
         long: "Not Started",
-        short: "NS",
+        short: "TIMED",
         elapsed: null,
       },
 

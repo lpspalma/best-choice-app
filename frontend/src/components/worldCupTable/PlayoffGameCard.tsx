@@ -13,7 +13,7 @@ type PlayoffGameCardProps = {
 };
 
 export function PlayoffGameCard({ game }: PlayoffGameCardProps) {
-  const shouldShowScore = game.status.short !== "NS";
+  const shouldShowScore = game.status.short !== "TIMED";
 
   const hasPenalty =
     game.score?.penalty?.home !== null &&

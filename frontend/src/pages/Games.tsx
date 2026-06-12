@@ -2,115 +2,134 @@ import { useEffect, useState } from "react";
 
 import { GameList } from "../components/game/GameList";
 import { PageContainer } from "../components/layout/PageContainer";
-import { Button } from "../components/ui/Button";
+import { DateTabs } from "../components/ui/DateTabs";
 import { EmptyState } from "../components/ui/EmptyState";
 import { PageHeader } from "../components/ui/PageHeader";
-import { getWorldCupGames } from "../services/worldCupService";
+import {
+  getWorldCupGameDates,
+  getWorldCupGamesByDate,
+} from "../services/worldCupService";
 import type { Game } from "../types/game";
-import { getDateKey, getTodayKey } from "../utils/formatters/date";
-
-type GamesTab = "today-games" | "all-games";
+import { formatShortDate } from "../utils/formatters/date";
 
 export function Games() {
-  const [activeTab, setActiveTab] = useState<GamesTab>("today-games");
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState("");
   const [games, setGames] = useState<Game[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [isLoadingDates, setIsLoadingDates] = useState(true);
+  const [isLoadingGames, setIsLoadingGames] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadGames() {
+    async function loadDates() {
       try {
-        const data = await getWorldCupGames();
-        setGames(data);
+        const dates = await getWorldCupGameDates();
+        const defaultDate = getDefaultSelectedDate(dates);
+
+        setAvailableDates(dates);
+        setSelectedDate(defaultDate);
       } catch {
-        setError("Não foi possível carregar os jogos.");
+        setError("Não foi possível carregar as datas dos jogos.");
       } finally {
-        setIsLoading(false);
+        setIsLoadingDates(false);
       }
     }
 
-    loadGames();
+    loadDates();
   }, []);
 
-  const todayGames = games.filter(
-    (game) => getDateKey(game.date) === getTodayKey(),
-  );
+  useEffect(() => {
+    if (!selectedDate) {
+      return;
+    }
 
-  if (isLoading) {
-    return (
-      <PageContainer>
-        <PageHeader
-          title="Jogos"
-          description="Acompanhe os jogos do dia e todos os jogos da Copa."
-        />
+    async function loadGamesByDate() {
+      try {
+        setIsLoadingGames(true);
+        setError("");
 
-        <EmptyState
-          title="Carregando jogos..."
-          description="Buscando os jogos disponíveis."
-        />
-      </PageContainer>
-    );
-  }
+        const data = await getWorldCupGamesByDate(selectedDate);
+        setGames(data);
+      } catch {
+        setError("Não foi possível carregar os jogos desta data.");
+      } finally {
+        setIsLoadingGames(false);
+      }
+    }
 
-  if (error) {
-    return (
-      <PageContainer>
-        <PageHeader
-          title="Jogos"
-          description="Acompanhe os jogos do dia e todos os jogos da Copa."
-        />
-
-        <EmptyState title="Erro ao carregar jogos" description={error} />
-      </PageContainer>
-    );
-  }
+    loadGamesByDate();
+  }, [selectedDate]);
 
   return (
     <PageContainer>
       <PageHeader
         title="Jogos"
-        description="Acompanhe os jogos do dia e todos os jogos da Copa."
+        description="Acompanhe os jogos da Copa por data."
       />
 
-      <div className="mb-4 grid grid-cols-2 gap-2 md:hidden">
-        <Button
-          type="button"
-          onClick={() => setActiveTab("today-games")}
-          variant={activeTab === "today-games" ? "primary" : "secondary"}
-        >
-          Jogos de Hoje
-        </Button>
-
-        <Button
-          type="button"
-          onClick={() => setActiveTab("all-games")}
-          variant={activeTab === "all-games" ? "primary" : "secondary"}
-        >
-          Todos os Jogos
-        </Button>
-      </div>
-
-      <section
-        className={
-          activeTab === "today-games" ? "space-y-4" : "hidden md:hidden"
-        }
-      >
-        <GameList
-          games={todayGames}
-          emptyTitle="Nenhum jogo hoje"
-          emptyDescription="Volte mais tarde para acompanhar os próximos jogos."
+      {isLoadingDates ? (
+        <EmptyState
+          title="Carregando datas..."
+          description="Buscando os dias com jogos disponíveis."
         />
-      </section>
-
-      <section
-        className={activeTab === "all-games" ? "space-y-4" : "hidden md:block"}
-      >
-        <GameList
-          games={games}
-          emptyTitle="Nenhum jogo encontrado"
-          emptyDescription="Assim que os jogos estiverem disponíveis, eles aparecerão aqui."
+      ) : error ? (
+        <EmptyState title="Erro ao carregar jogos" description={error} />
+      ) : availableDates.length === 0 ? (
+        <EmptyState
+          title="Nenhuma data encontrada"
+          description="Assim que os jogos estiverem disponíveis, as datas aparecerão aqui."
         />
-      </section>
+      ) : (
+        <>
+          <DateTabs
+            dates={availableDates}
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+          />
+          <p className="mb-4 text-sm font-medium text-app-muted">
+            Jogos de {formatShortDate(selectedDate)}
+          </p>
+
+          <section
+            className={`space-y-4 transition-opacity duration-300 ${
+              isLoadingGames ? "opacity-50" : "opacity-100"
+            }`}
+          >
+            <GameList
+              games={games}
+              emptyTitle={
+                isLoadingGames
+                  ? "Carregando jogos..."
+                  : "Nenhum jogo encontrado"
+              }
+              emptyDescription={
+                isLoadingGames
+                  ? "Buscando os jogos da data selecionada."
+                  : "Não encontramos jogos para esta data."
+              }
+            />
+          </section>
+        </>
+      )}
     </PageContainer>
   );
+}
+
+function getDefaultSelectedDate(dates: string[]) {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+  }).format(new Date());
+
+  if (dates.includes(today)) {
+    return today;
+  }
+
+  const futureDates = dates.filter((date) => date > today);
+
+  if (futureDates.length > 0) {
+    return futureDates[0];
+  }
+
+  return dates[dates.length - 1] ?? "";
 }

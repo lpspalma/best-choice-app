@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import {
-  getTodayWorldCupGamesService,
+  getWorldCupGameDatesService,
   getWorldCupGamesByDateService,
   getWorldCupGamesFromDbService,
   getWorldCupMatchesService,
@@ -49,20 +49,6 @@ export async function getWorldCupGamesFromDb(
   }
 }
 
-export async function getTodayWorldCupGames(
-  _req: Request,
-  res: Response,
-  next: NextFunction,
-) {
-  try {
-    const games = await getTodayWorldCupGamesService();
-
-    return res.status(200).json(games);
-  } catch (error) {
-    next(error);
-  }
-}
-
 export async function getWorldCupGamesByDate(
   req: Request,
   res: Response,
@@ -74,6 +60,20 @@ export async function getWorldCupGamesByDate(
     const games = await getWorldCupGamesByDateService(date);
 
     return res.status(200).json(games);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorldCupGameDates(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const dates = await getWorldCupGameDatesService();
+
+    return res.status(200).json(dates);
   } catch (error) {
     next(error);
   }

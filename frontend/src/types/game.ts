@@ -1,11 +1,11 @@
+import type { FixtureStatus } from "../constants/gameStatus";
+
 export type Team = {
   id: number;
   name: string;
   logo?: string;
   winner?: boolean | null;
 };
-
-export type FixtureStatus = "NS" | "1H" | "HT" | "2H" | "ET" | "P" | "FT";
 
 export type GameScore = {
   halftime?: {

@@ -12,11 +12,9 @@ import { VerifyResetCode } from "./pages/VerifyResetCode";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { AuthLayout } from "./layouts/AuthLayout";
 import { MyGuesses } from "./pages/MyGuesses";
-import { TodayGames } from "./pages/TodayGames";
 import { Games } from "./pages/Games";
 import { UserGuesses } from "./pages/UserGuesses";
 import { WorldCupTable } from "./pages/WorldCupTable";
-import { Results } from "./pages/Results";
 import { Ranking } from "./pages/Ranking";
 import { Rules } from "./pages/Rules";
 import { LoadingState } from "./components/ui/LoadingState";
@@ -49,11 +47,9 @@ export default function App() {
       >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/my-guesses" element={<MyGuesses />} />
-        <Route path="/today-games" element={<TodayGames />} />
         <Route path="/games" element={<Games />} />
         <Route path="/user-guesses" element={<UserGuesses />} />
         <Route path="/world-cup-table" element={<WorldCupTable />} />
-        <Route path="/results" element={<Results />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/rules" element={<Rules />} />
         <Route path="/profile" element={<Profile />} />

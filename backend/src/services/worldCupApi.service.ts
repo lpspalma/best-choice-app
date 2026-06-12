@@ -94,10 +94,21 @@ export async function getWorldCupGamesByDateService(date: string) {
   return games.map(mapDbGameToGame);
 }
 
-export async function getTodayWorldCupGamesService() {
-  const today = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Sao_Paulo",
-  }).format(new Date());
+export async function getWorldCupGameDatesService() {
+  const games = await prisma.game.findMany({
+    select: {
+      date: true,
+    },
+    orderBy: {
+      date: "asc",
+    },
+  });
 
-  return getWorldCupGamesByDateService(today);
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+  });
+
+  const dates = games.map((game) => formatter.format(game.date));
+
+  return Array.from(new Set(dates));
 }
