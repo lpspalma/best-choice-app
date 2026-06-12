@@ -12,7 +12,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {
@@ -49,7 +49,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {
@@ -86,7 +86,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {
@@ -123,7 +123,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Match Finished",
-      short: "FT",
+      short: "FINISHED",
       elapsed: 90,
     },
     league: {
@@ -160,7 +160,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Match Finished",
-      short: "FT",
+      short: "FINISHED",
       elapsed: 90,
     },
     league: {
@@ -197,7 +197,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Match Finished",
-      short: "FT",
+      short: "FINISHED",
       elapsed: 120,
     },
     league: {
@@ -252,7 +252,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Match Finished",
-      short: "FT",
+      short: "FINISHED",
       elapsed: 90,
     },
     league: {
@@ -289,7 +289,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {
@@ -326,7 +326,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {
@@ -363,7 +363,7 @@ export const mockPlayoffs: Game[] = [
     },
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
     league: {

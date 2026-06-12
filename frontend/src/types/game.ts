@@ -1,20 +1,11 @@
+import type { FixtureStatus } from "../constants/gameStatus";
+
 export type Team = {
   id: number;
   name: string;
   logo?: string;
   winner?: boolean | null;
 };
-
-export type FixtureStatus =
-  | "TIMED"
-  | "SCHEDULED"
-  | "IN_PLAY"
-  | "PAUSED"
-  | "FINISHED"
-  | "POSTPONED"
-  | "SUSPENDED"
-  | "CANCELLED"
-  | string;
 
 export type GameScore = {
   halftime?: {

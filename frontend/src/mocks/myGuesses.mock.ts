@@ -20,7 +20,7 @@ export const mockMyGuesses: MyGuess[] = [
 
       status: {
         long: "Not Started",
-        short: "NS",
+        short: "TIMED",
         elapsed: null,
       },
 
@@ -77,7 +77,7 @@ export const mockMyGuesses: MyGuess[] = [
 
       status: {
         long: "Not Started",
-        short: "NS",
+        short: "TIMED",
         elapsed: null,
       },
 
@@ -131,7 +131,7 @@ export const mockMyGuesses: MyGuess[] = [
 
       status: {
         long: "Not Started",
-        short: "NS",
+        short: "TIMED",
         elapsed: null,
       },
 

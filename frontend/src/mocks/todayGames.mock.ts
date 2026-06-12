@@ -16,7 +16,7 @@ export const mockTodayGames: Game[] = [
 
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
 
@@ -60,7 +60,7 @@ export const mockTodayGames: Game[] = [
 
     status: {
       long: "Not Started",
-      short: "NS",
+      short: "TIMED",
       elapsed: null,
     },
 
