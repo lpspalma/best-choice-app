@@ -11,7 +11,8 @@ type GameCardProps = {
 };
 
 export function GameCard({ game }: GameCardProps) {
-  const shouldShowScore = game.status.short !== "NS";
+  const shouldShowScore =
+    game.status.short !== "TIMED" && game.status.short !== "SCHEDULED";
 
   return (
     <Card className="space-y-4">
