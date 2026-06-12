@@ -2,6 +2,9 @@ import { GameTeam } from "../game/GameTeam";
 import { Card } from "../ui/Card";
 import { mockUserGuesses } from "../../mocks/userGuesses.mock";
 import { theme } from "../../styles/theme";
+import { getRoundLabel } from "../../utils/translators/round";
+import { GameScore } from "../game/GameScore";
+import { formatGameDateTime } from "../../utils/formatters/date";
 
 export function UserGuessesList() {
   return (
@@ -42,11 +45,11 @@ export function UserGuessesList() {
 
           <div className="mb-4">
             <p className="text-sm font-semibold text-app-primary">
-              {guess.game.league.round}
+              {getRoundLabel(guess.game.league.round)}
             </p>
 
             <p className={theme.text.subtitle}>
-              {formatGameDate(guess.game.date)} • {guess.game.venue.name},{" "}
+              {formatGameDateTime(guess.game.date)} • {guess.game.venue.name},{" "}
               {guess.game.venue.city}
             </p>
           </div>
@@ -58,7 +61,10 @@ export function UserGuessesList() {
             />
 
             <div className="shrink-0 rounded-xl bg-app-surface px-3 py-2 text-base font-bold text-app-text md:px-4 md:text-lg">
-              {guess.homeGuess ?? "-"} x {guess.awayGuess ?? "-"}
+              <GameScore
+                homeScore={guess.homeGuess}
+                awayScore={guess.awayGuess}
+              />
             </div>
 
             <GameTeam
@@ -71,14 +77,4 @@ export function UserGuessesList() {
       ))}
     </div>
   );
-}
-
-function formatGameDate(date: string) {
-  return new Intl.DateTimeFormat("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
 }

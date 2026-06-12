@@ -13,6 +13,7 @@ import { theme } from "../styles/theme";
 import type { MyGuess } from "../types/myGuess";
 import { formatGameDateTime } from "../utils/formatters/date";
 import { DateTabs } from "../components/ui/DateTabs";
+import { getRoundLabel } from "../utils/translators/round";
 
 type GuessTab = "my-guesses" | "user-guesses";
 
@@ -162,7 +163,7 @@ function GuessCard({
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-app-primary">
-            {guess.game.league.round}
+            {getRoundLabel(guess.game.league.round)}
           </p>
 
           <p className={theme.text.subtitle}>
