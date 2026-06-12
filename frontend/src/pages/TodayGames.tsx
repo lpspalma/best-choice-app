@@ -4,7 +4,7 @@ import { GameList } from "../components/game/GameList";
 import { PageContainer } from "../components/layout/PageContainer";
 import { EmptyState } from "../components/ui/EmptyState";
 import { PageHeader } from "../components/ui/PageHeader";
-import { getWorldCupGames } from "../services/worldCupService";
+import { getTodayWorldCupGames } from "../services/worldCupService";
 import type { Game } from "../types/game";
 import { getDateKey, getTodayKey } from "../utils/formatters/date";
 
@@ -16,7 +16,7 @@ export function TodayGames() {
   useEffect(() => {
     async function loadGames() {
       try {
-        const data = await getWorldCupGames();
+        const data = await getTodayWorldCupGames();
         setGames(
           data.filter((game) => getDateKey(game.date) === getTodayKey()),
         );
