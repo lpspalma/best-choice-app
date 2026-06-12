@@ -1,6 +1,7 @@
 import type { Game } from "../../types/game";
 import { EmptyState } from "../ui/EmptyState";
 import { GameCard } from "./GameCard";
+import { ResultGameCard } from "./ResultGameCard";
 
 type GameListProps = {
   games: Game[];
@@ -19,9 +20,13 @@ export function GameList({
 
   return (
     <>
-      {games.map((game) => (
-        <GameCard key={game.id} game={game} />
-      ))}
+      {games.map((game) =>
+        game.status.short === "FINISHED" ? (
+          <ResultGameCard key={game.id} game={game} />
+        ) : (
+          <GameCard key={game.id} game={game} />
+        ),
+      )}
     </>
   );
 }

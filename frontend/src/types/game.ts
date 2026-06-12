@@ -5,7 +5,16 @@ export type Team = {
   winner?: boolean | null;
 };
 
-export type FixtureStatus = "NS" | "1H" | "HT" | "2H" | "ET" | "P" | "FT";
+export type FixtureStatus =
+  | "TIMED"
+  | "SCHEDULED"
+  | "IN_PLAY"
+  | "PAUSED"
+  | "FINISHED"
+  | "POSTPONED"
+  | "SUSPENDED"
+  | "CANCELLED"
+  | string;
 
 export type GameScore = {
   halftime?: {
