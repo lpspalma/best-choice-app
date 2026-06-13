@@ -1,8 +1,4 @@
-export type StandingTeam = {
-  id: number;
-  name: string;
-  logo?: string;
-};
+import type { StandingTeam } from "./team";
 
 export type TeamStanding = {
   rank: number;

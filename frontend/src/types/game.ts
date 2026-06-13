@@ -1,11 +1,5 @@
 import type { FixtureStatus } from "../constants/gameStatus";
-
-export type Team = {
-  id: number;
-  name: string;
-  logo?: string;
-  winner?: boolean | null;
-};
+import type { GameTeam } from "./team";
 
 export type GameScore = {
   halftime?: {
@@ -48,8 +42,8 @@ export type Game = {
   };
 
   teams: {
-    home: Team;
-    away: Team;
+    home: GameTeam;
+    away: GameTeam;
   };
 
   goals: {

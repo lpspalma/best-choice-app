@@ -16,6 +16,7 @@ export const TEAM_NAME_TRANSLATIONS_PT: Record<number, string> = {
   774: "África do Sul",
   778: "Argélia",
   779: "Austrália",
+  783: "Nova Zelândia",
   788: "Suíça",
   791: "Equador",
   792: "Suécia",
