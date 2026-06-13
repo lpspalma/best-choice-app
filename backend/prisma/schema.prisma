@@ -50,6 +50,7 @@ model Team {
 
   homeGames  Game[] @relation("HomeTeam")
   awayGames  Game[] @relation("AwayTeam")
+  standings  Standing[]
 }
 
 model Game {
@@ -84,4 +85,29 @@ model Game {
 
   @@index([date])
   @@index([statusShort])
+}
+
+model Standing {
+  id             String   @id @default(cuid())
+
+  group          String
+  rank           Int
+  points         Int
+  played         Int
+  win            Int
+  draw           Int
+  lose           Int
+  goalsFor       Int
+  goalsAgainst   Int
+  goalsDiff      Int
+
+  teamId         String
+  team           Team     @relation(fields: [teamId], references: [id])
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([group, teamId])
+  @@index([group])
+  @@index([rank])
 }

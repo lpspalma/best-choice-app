@@ -109,7 +109,7 @@ export function mapFootballDataMatchToGame(match: FootballDataMatch): Game {
       away: {
         id: match.awayTeam.id,
         name: match.awayTeam.name,
-        namePt: getTeamNamePt(match.homeTeam.id, match.homeTeam.name),
+        namePt: getTeamNamePt(match.awayTeam.id, match.awayTeam.name),
         logo: match.awayTeam.crest,
         winner: winner.away,
       },

@@ -3,6 +3,7 @@ import { mapFootballDataMatchToGame } from "../mappers/worldCup.mapper";
 import { prisma } from "../lib/prisma";
 import { getTeamNamePt } from "../utils/team.utils";
 import { mapTeam } from "../mappers/team.mapper";
+import { mapDbStandingToResponse } from "../mappers/standing.mapper";
 
 export async function getWorldCupGamesFromDbService() {
   const games = await prisma.game.findMany({
@@ -115,4 +116,35 @@ export async function getWorldCupTeamsService() {
   });
 
   return teams.map(mapTeam);
+}
+
+export async function getWorldCupStandingsService() {
+  const standings = await prisma.standing.findMany({
+    orderBy: [
+      {
+        group: "asc",
+      },
+      {
+        rank: "asc",
+      },
+    ],
+    include: {
+      team: true,
+    },
+  });
+
+  const groupedStandings = standings.reduce<Record<string, any[]>>(
+    (groups, standing) => {
+      if (!groups[standing.group]) {
+        groups[standing.group] = [];
+      }
+
+      groups[standing.group].push(mapDbStandingToResponse(standing));
+
+      return groups;
+    },
+    {},
+  );
+
+  return Object.values(groupedStandings);
 }

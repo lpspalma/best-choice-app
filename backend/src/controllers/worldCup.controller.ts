@@ -4,9 +4,11 @@ import {
   getWorldCupGamesByDateService,
   getWorldCupGamesFromDbService,
   getWorldCupMatchesService,
+  getWorldCupStandingsService,
   getWorldCupTeamsService,
 } from "../services/worldCupApi.service";
 import { syncWorldCupMatchesService } from "../services/worldCupSync.service";
+import { syncWorldCupStandingsService } from "../services/worldCupStandingsSync.service";
 
 export async function getWorldCupMatches(
   _req: Request,
@@ -89,6 +91,34 @@ export async function getWorldCupTeams(
     const teams = await getWorldCupTeamsService();
 
     return res.status(200).json(teams);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function syncWorldCupStandings(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const result = await syncWorldCupStandingsService();
+
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorldCupStandings(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const standings = await getWorldCupStandingsService();
+
+    return res.status(200).json(standings);
   } catch (error) {
     next(error);
   }
