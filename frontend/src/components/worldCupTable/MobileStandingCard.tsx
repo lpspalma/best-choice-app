@@ -3,14 +3,13 @@ import { GameTeam } from "../game/GameTeam";
 import type { TeamStanding } from "../../types/standing";
 
 import { StatItem } from "./StatItem";
-import { getStandingDescriptionLabel } from "../../utils/translators/standing";
 
 type MobileStandingCardProps = {
   standing: TeamStanding;
 };
 
 export function MobileStandingCard({ standing }: MobileStandingCardProps) {
-  const isQualified = standing.description?.includes("Qualification");
+  const isQualified = standing.rank <= 2;
 
   return (
     <div
@@ -36,26 +35,14 @@ export function MobileStandingCard({ standing }: MobileStandingCardProps) {
       </div>
 
       <div className="mt-4 grid grid-cols-4 gap-2 text-center text-xs">
-        <StatItem label="J" value={standing.all?.played ?? 0} />
-        <StatItem label="V" value={standing.all?.win ?? 0} />
-        <StatItem label="E" value={standing.all?.draw ?? 0} />
-        <StatItem label="D" value={standing.all?.lose ?? 0} />
-        <StatItem label="GP" value={standing.all?.goals?.for ?? 0} />
-        <StatItem label="GC" value={standing.all?.goals?.against ?? 0} />
-        <StatItem label="SG" value={standing.goalsDiff ?? 0} />
+        <StatItem label="J" value={standing.played} />
+        <StatItem label="V" value={standing.win} />
+        <StatItem label="E" value={standing.draw} />
+        <StatItem label="D" value={standing.lose} />
+        <StatItem label="GP" value={standing.goalsFor} />
+        <StatItem label="GC" value={standing.goalsAgainst} />
+        <StatItem label="SG" value={standing.goalsDiff} />
         <StatItem label="PTS" value={standing.points} />
-      </div>
-
-      <div className="mt-4">
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
-            isQualified
-              ? "bg-app-primary/20 text-app-primary"
-              : "bg-app-card-soft text-app-muted"
-          }`}
-        >
-          {getStandingDescriptionLabel(standing.description)}
-        </span>
       </div>
     </div>
   );

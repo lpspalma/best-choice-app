@@ -3,7 +3,6 @@ import { GameTeam } from "../game/GameTeam";
 import type { StandingGroup } from "../../types/standing";
 
 import { theme } from "../../styles/theme";
-import { getStandingDescriptionLabel } from "../../utils/translators/standing";
 
 type StandingsTableProps = {
   group: StandingGroup;
@@ -25,13 +24,12 @@ export function StandingsTable({ group }: StandingsTableProps) {
             <th className="py-3 text-center font-semibold">GC</th>
             <th className="py-3 text-center font-semibold">SG</th>
             <th className="py-3 text-center font-semibold">PTS</th>
-            <th className="py-3 text-left font-semibold">Status</th>
           </tr>
         </thead>
 
         <tbody>
           {group.map((standing) => {
-            const isQualified = standing.description?.includes("Qualification");
+            const isQualified = standing.rank <= 2;
 
             return (
               <tr
@@ -54,47 +52,35 @@ export function StandingsTable({ group }: StandingsTableProps) {
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.played ?? 0}
+                  {standing.played}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.win ?? 0}
+                  {standing.win}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.draw ?? 0}
+                  {standing.draw}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.lose ?? 0}
+                  {standing.lose}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.goals?.for ?? 0}
+                  {standing.goalsFor}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.all?.goals?.against ?? 0}
+                  {standing.goalsAgainst}
                 </td>
 
                 <td className="py-4 text-center text-app-text">
-                  {standing.goalsDiff ?? 0}
+                  {standing.goalsDiff}
                 </td>
 
                 <td className="py-4 text-center font-bold text-app-gold">
                   {standing.points}
-                </td>
-
-                <td className="py-4">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      isQualified
-                        ? "bg-app-primary/20 text-app-primary"
-                        : "bg-app-card-soft text-app-muted"
-                    }`}
-                  >
-                    {getStandingDescriptionLabel(standing.description)}
-                  </span>
                 </td>
               </tr>
             );

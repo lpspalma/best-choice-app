@@ -1,5 +1,6 @@
 import { API_URL } from "./api";
 import type { Game } from "../types/game";
+import type { StandingGroup } from "../types/standing";
 
 export async function getWorldCupGames(): Promise<Game[]> {
   const response = await fetch(`${API_URL}/world-cup/games`);
@@ -26,6 +27,16 @@ export async function getWorldCupGameDates(): Promise<string[]> {
 
   if (!response.ok) {
     throw new Error("Failed to fetch World Cup game dates");
+  }
+
+  return response.json();
+}
+
+export async function getWorldCupStandings(): Promise<StandingGroup[]> {
+  const response = await fetch(`${API_URL}/world-cup/standings`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch World Cup standings");
   }
 
   return response.json();
