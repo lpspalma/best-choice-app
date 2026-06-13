@@ -33,7 +33,10 @@ export function GameCard({ game }: GameCardProps) {
       </div>
 
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-        <GameTeam name={game.teams.home.name} logo={game.teams.home.logo} />
+        <GameTeam
+          name={game.teams.home.namePt ?? game.teams.home.name}
+          logo={game.teams.home.logo}
+        />
 
         <div className="text-center">
           {shouldShowScore ? (
@@ -46,7 +49,7 @@ export function GameCard({ game }: GameCardProps) {
         </div>
 
         <GameTeam
-          name={game.teams.away.name}
+          name={game.teams.away.namePt ?? game.teams.away.name}
           logo={game.teams.away.logo}
           alignRight
         />

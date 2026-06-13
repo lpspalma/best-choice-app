@@ -1,5 +1,3 @@
-import { getTeamNamePt } from "../../utils/translators/team";
-
 type GameTeamProps = {
   name: string;
   logo?: string;
@@ -13,9 +11,7 @@ export function GameTeam({
   shortName,
   alignRight = false,
 }: GameTeamProps) {
-  const translatedName = getTeamNamePt(name);
-  const displayShortName =
-    shortName ?? translatedName.slice(0, 3).toUpperCase();
+  const displayShortName = shortName ?? name.slice(0, 3).toUpperCase();
 
   return (
     <div
@@ -23,17 +19,17 @@ export function GameTeam({
         alignRight ? "justify-end text-right" : ""
       }`}
     >
-      {!alignRight && <TeamLogo logo={logo} name={translatedName} />}
+      {!alignRight && <TeamLogo logo={logo} name={name} />}
 
       <p className="text-center text-[10px] font-semibold text-app-text md:hidden">
         {displayShortName}
       </p>
 
       <p className="hidden truncate text-sm font-semibold text-app-text md:block">
-        {translatedName}
+        {name}
       </p>
 
-      {alignRight && <TeamLogo logo={logo} name={translatedName} />}
+      {alignRight && <TeamLogo logo={logo} name={name} />}
     </div>
   );
 }

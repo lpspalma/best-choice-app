@@ -1,4 +1,5 @@
 import type { Game } from "../types/game";
+import { getTeamNamePt } from "../utils/team.utils";
 
 type FootballDataMatch = {
   id: number;
@@ -101,12 +102,14 @@ export function mapFootballDataMatchToGame(match: FootballDataMatch): Game {
       home: {
         id: match.homeTeam.id,
         name: match.homeTeam.name,
+        namePt: getTeamNamePt(match.homeTeam.id, match.homeTeam.name),
         logo: match.homeTeam.crest,
         winner: winner.home,
       },
       away: {
         id: match.awayTeam.id,
         name: match.awayTeam.name,
+        namePt: getTeamNamePt(match.homeTeam.id, match.homeTeam.name),
         logo: match.awayTeam.crest,
         winner: winner.away,
       },

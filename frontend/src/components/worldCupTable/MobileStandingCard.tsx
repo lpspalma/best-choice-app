@@ -3,7 +3,6 @@ import { GameTeam } from "../game/GameTeam";
 import type { TeamStanding } from "../../types/standing";
 
 import { StatItem } from "./StatItem";
-import { getTeamNamePt } from "../../utils/translators/team";
 import { getStandingDescriptionLabel } from "../../utils/translators/standing";
 
 type MobileStandingCardProps = {
@@ -28,7 +27,7 @@ export function MobileStandingCard({ standing }: MobileStandingCardProps) {
           </span>
 
           <GameTeam
-            name={getTeamNamePt(standing.team.name)}
+            name={standing.team.namePt ?? standing.team.name}
             logo={standing.team.logo}
           />
         </div>

@@ -2,7 +2,6 @@ import { theme } from "../../styles/theme";
 import type { Game } from "../../types/game";
 import { formatGameDateTime } from "../../utils/formatters/date";
 import { getRoundLabel } from "../../utils/translators/round";
-import { getTeamNamePt } from "../../utils/translators/team";
 import { Card } from "../ui/Card";
 import { GameTeam } from "./GameTeam";
 
@@ -33,7 +32,7 @@ export function ResultGameCard({ game }: ResultGameCardProps) {
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className={getWinnerClassName(game.teams.home.winner)}>
           <GameTeam
-            name={getTeamNamePt(game.teams.home.name)}
+            name={game.teams.home.namePt ?? game.teams.home.name}
             logo={game.teams.home.logo}
           />
 
@@ -54,7 +53,7 @@ export function ResultGameCard({ game }: ResultGameCardProps) {
 
         <div className={getWinnerClassName(game.teams.away.winner)}>
           <GameTeam
-            name={getTeamNamePt(game.teams.away.name)}
+            name={game.teams.away.namePt ?? game.teams.away.name}
             logo={game.teams.away.logo}
             alignRight
           />
