@@ -1,6 +1,7 @@
 export type Team = {
   id: number;
   name: string;
+  namePt: string;
   logo?: string;
   winner?: boolean | null;
 };

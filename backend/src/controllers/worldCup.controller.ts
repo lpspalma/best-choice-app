@@ -4,6 +4,7 @@ import {
   getWorldCupGamesByDateService,
   getWorldCupGamesFromDbService,
   getWorldCupMatchesService,
+  getWorldCupTeamsService,
 } from "../services/worldCupApi.service";
 import { syncWorldCupMatchesService } from "../services/worldCupSync.service";
 
@@ -74,6 +75,20 @@ export async function getWorldCupGameDates(
     const dates = await getWorldCupGameDatesService();
 
     return res.status(200).json(dates);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getWorldCupTeams(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const teams = await getWorldCupTeamsService();
+
+    return res.status(200).json(teams);
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,8 @@
 import { footballDataApi } from "../lib/apiFootball";
 import { mapFootballDataMatchToGame } from "../mappers/worldCup.mapper";
 import { prisma } from "../lib/prisma";
+import { getTeamNamePt } from "../utils/team.utils";
+import { mapTeam } from "../mappers/team.mapper";
 
 export async function getWorldCupGamesFromDbService() {
   const games = await prisma.game.findMany({
@@ -39,16 +41,8 @@ function mapDbGameToGame(game: any) {
     },
 
     teams: {
-      home: {
-        id: game.homeTeam.externalId,
-        name: game.homeTeam.name,
-        logo: game.homeTeam.logo,
-      },
-      away: {
-        id: game.awayTeam.externalId,
-        name: game.awayTeam.name,
-        logo: game.awayTeam.logo,
-      },
+      home: mapTeam(game.homeTeam),
+      away: mapTeam(game.awayTeam),
     },
 
     goals: {
@@ -111,4 +105,14 @@ export async function getWorldCupGameDatesService() {
   const dates = games.map((game) => formatter.format(game.date));
 
   return Array.from(new Set(dates));
+}
+
+export async function getWorldCupTeamsService() {
+  const teams = await prisma.team.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return teams.map(mapTeam);
 }
